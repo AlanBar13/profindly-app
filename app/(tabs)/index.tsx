@@ -1,21 +1,21 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
+import { Text } from "react-native-paper";
 import React from "react";
-import { Colors } from "@/constants/Colors";
 import { Link } from "expo-router";
 
 const Page = () => {
   return (
     <View>
-      <Link href={"/(modals)/login"} style={{ color: Colors.dark.primary }}>
-        Login
+      <Link href={"/(modals)/login"}>
+        <Text>Login</Text>
       </Link>
-      <Link href={"/(modals)/schedule"} style={{ color: Colors.dark.primary }}>
-        Schedule
+      <Link href={"/(modals)/schedule"}>
+        <Text>Schedule</Text>
       </Link>
-      <Link href={"/specialist/123"} style={{ color: Colors.dark.primary }}>
-        Specilist details page
+      <Link href={"/specialist/123"}>
+        <Text>Specilist detail page</Text>
       </Link>
-      <Text style={{ color: Colors.dark.primary }}>Home</Text>
+      <Text>Home</Text>
     </View>
   );
 };
