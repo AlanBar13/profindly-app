@@ -8,7 +8,7 @@ import {
 import { Alert } from "react-native";
 import { supabase } from "@/lib/supabase";
 import { Session } from "@supabase/supabase-js";
-//import { api } from "@/lib/apiClient";
+import { api } from "@/lib/apiClient";
 
 interface AuthContextType {
   session: Session | null;
@@ -100,24 +100,24 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       return;
     }
 
-    // if (session) {
-    //   // Create user on DB
-    //   await api.post(
-    //     "/users",
-    //     {
-    //       name,
-    //       lastname,
-    //       email,
-    //       login_type: "email",
-    //       auth_id: session.user.id,
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${session.access_token}`,
-    //       },
-    //     }
-    //   );
-    // }
+    if (session) {
+      // Create user on DB
+      await api.post(
+        "/users",
+        {
+          name,
+          lastname,
+          email,
+          login_type: "email",
+          auth_id: session.user.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        }
+      );
+    }
 
     setSession(session);
     setLoading(false);
