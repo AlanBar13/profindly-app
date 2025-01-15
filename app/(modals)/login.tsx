@@ -1,28 +1,46 @@
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
-import { Link, router } from "expo-router";
-import { useAuth } from "@/hooks/useAuth";
 import { Colors } from "@/constants/Colors";
+import { useWarmUpBrowser } from "@/hooks/useWarmupBrowser";
+import { useOAuth } from "@clerk/clerk-expo";
+import * as Linking from "expo-linking";
+import { Ionicons } from "@expo/vector-icons";
 
-const Page = () => {
-  const { loading, signInWithEmail } = useAuth();
+enum Strategy {
+  Google = "oauth_google",
+  Apple = "oauth_apple",
+}
+
+const Login = () => {
+  useWarmUpBrowser();
+  const { startOAuthFlow: googleAuth } = useOAuth({ strategy: "oauth_google" });
+  const { startOAuthFlow: appleAuth } = useOAuth({ strategy: "oauth_apple" });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
 
-  const signIn = async () => {
-    await signInWithEmail(email, password);
-    setEmail("");
-    setPassword("");
+  const onSelectAuth = async (strategy: Strategy) => {
+    const selectedAuth = {
+      [Strategy.Apple]: appleAuth,
+      [Strategy.Google]: googleAuth,
+    }[strategy];
 
-    // Go to home
-    router.replace("/");
+    try {
+      const { createdSessionId, setActive } = await selectedAuth({
+        redirectUrl: Linking.createURL("/"),
+      });
+      if (createdSessionId) {
+        setActive!({ session: createdSessionId });
+      }
+    } catch (error) {
+      console.error("OAuth Error: ", error);
+    }
   };
 
   return (
     <View style={styles.container}>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
+      {/* <View style={[styles.verticallySpaced, styles.mt20]}>
         <TextInput
           label="Email"
           value={email}
@@ -46,14 +64,25 @@ const Page = () => {
         />
       </View>
       <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button mode="contained" onPress={() => signIn()} loading={loading}>
-          Iniciar sesión
+        <Button mode="contained">Iniciar sesión</Button>
+      </View> */}
+      <View style={styles.verticallySpaced}>
+        <Button
+          icon={(props) => <Ionicons name="logo-google" {...props} />}
+          mode="contained"
+          onPress={() => onSelectAuth(Strategy.Google)}
+        >
+          Continuar con Google
         </Button>
       </View>
       <View style={styles.verticallySpaced}>
-        <Link href="/(modals)/sign-up" asChild>
-          <Button mode="outlined">Registrarse</Button>
-        </Link>
+        <Button
+          icon={(props) => <Ionicons name="logo-apple" {...props} />}
+          mode="contained"
+          onPress={() => onSelectAuth(Strategy.Apple)}
+        >
+          Continuar con Apple
+        </Button>
       </View>
     </View>
   );
@@ -78,5 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
-export default Page;
+export default Login;

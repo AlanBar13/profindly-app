@@ -19,7 +19,8 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "react-native";
-import AuthProvider from "@/hooks/useAuth";
+import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
+import { tokenCache } from "@/lib/cache";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -35,6 +36,14 @@ const { LightTheme, DarkTheme } = adaptNavigationTheme({
 
 const CombinedLightTheme = merge(LightTheme, customLightTheme);
 const CombinedDarkTheme = merge(DarkTheme, customDarkTheme);
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+
+if (!publishableKey) {
+  throw new Error(
+    "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env"
+  );
+}
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -58,10 +67,12 @@ export default function RootLayout() {
   return (
     <PaperProvider theme={paperTheme}>
       <ThemeProvider value={paperTheme}>
-        <AuthProvider>
-          <RootLayoutNav />
-          <StatusBar style="auto" />
-        </AuthProvider>
+        <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+          <ClerkLoaded>
+            <RootLayoutNav />
+            <StatusBar style="auto" />
+          </ClerkLoaded>
+        </ClerkProvider>
       </ThemeProvider>
     </PaperProvider>
   );

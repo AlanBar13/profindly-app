@@ -1,18 +1,23 @@
 import { View } from "react-native";
 import React from "react";
-import { useAuth } from "@/hooks/useAuth";
 import { Text, Button } from "react-native-paper";
 import { Link } from "expo-router";
+import { useUser, useAuth } from "@clerk/clerk-expo";
 
 const Profile = () => {
-  const {session, signOut} = useAuth();
+  const { isSignedIn, signOut } = useAuth();
+  const { user } = useUser();
   return (
     <View>
-      <Text>Profile {session && session.user.email}</Text>
+      <Text>Profile {user && user.firstName}</Text>
 
-      {session ? (<Button onPress={signOut} mode="contained">Cerrar Sesion</Button>): (
+      {isSignedIn ? (
+        <Button onPress={() => signOut()} mode="contained">
+          Cerrar Sesion
+        </Button>
+      ) : (
         <Link href="/(modals)/login" asChild>
-          <Button onPress={signOut} mode="contained">Iniciar Sesion</Button>
+          <Button mode="contained">Iniciar Sesion</Button>
         </Link>
       )}
     </View>
