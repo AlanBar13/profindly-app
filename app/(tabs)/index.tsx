@@ -1,14 +1,17 @@
 import { StyleSheet, View } from "react-native";
 import { Text, Button } from "react-native-paper";
 import { useEffect, useState } from "react";
-import { Link } from "expo-router";
+import { Link, Stack } from "expo-router";
 import { Specialist } from "@/models/Specialist";
 import { useAlert } from "@/hooks/useAlert";
 import { useApi } from "@/hooks/useApi";
+import ExploreHeader from "@/components/ExploreHeader";
+import Listings from "@/components/Listings";
 
 const Explore = () => {
   const { showAlert } = useAlert();
   const api = useApi()
+  const [category, setCategory] = useState("General")
   const [specialists, setSpecialists] = useState<Specialist[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -29,29 +32,16 @@ const Explore = () => {
     getSpecialists();
   }, []);
 
+  const onDataChange = (category: string) => {
+    setCategory(category)
+  }
+
   return (
     <View style={styles.container}>
-      <Link href={"/(modals)/login"}>
-        <Text>Login</Text>
-      </Link>
-      <Link href={"/(modals)/schedule"}>
-        <Text>Schedule</Text>
-      </Link>
-      <Link href={"/specialist/123"}>
-        <Text>Specilist detail page</Text>
-      </Link>
-      <Text>Home</Text>
-      <Button
-        mode="contained"
-        onPress={() => {
-          showAlert("test");
-        }}
-      >
-        Mostrar error
-      </Button>
-      {specialists.map((specialist) => (
-        <Text key={specialist._id}>{specialist.name}</Text>
-      ))}
+      <Stack.Screen options={{
+        header: () => <ExploreHeader onCategoryChange={onDataChange} />
+      }} />
+      <Listings listings={[]} category={category} />
     </View>
   );
 };

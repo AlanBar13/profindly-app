@@ -52,8 +52,8 @@ export default function RootLayout() {
   const paperTheme =
     colorScheme === "dark" ? CombinedDarkTheme : CombinedLightTheme;
   const [loaded] = useFonts({
-    roboto: require("../assets/fonts/Roboto-Regular.ttf"),
-    "roboto-i": require("../assets/fonts/Roboto-Italic.ttf"),
+    "mn-r": require("../assets/fonts/Montserrat-Regular.ttf"),
+    "mn-b": require("../assets/fonts/Montserrat-Bold.ttf"),
   });
 
   useEffect(() => {
@@ -96,7 +96,7 @@ function RootLayoutNav() {
         options={{
           title: "Iniciar sesion",
           headerTitleStyle: {
-            fontFamily: "roboto",
+            fontFamily: "mn-r",
           },
           presentation: "modal",
         }}
@@ -106,7 +106,7 @@ function RootLayoutNav() {
         options={{
           title: "",
           headerTitleStyle: {
-            fontFamily: "roboto",
+            fontFamily: "mn-r",
           },
         }}
       />

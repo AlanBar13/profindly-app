@@ -16,7 +16,7 @@ const Layout = () => {
       screenOptions={{
         tabBarActiveTintColor: Colors.dark.primary,
         tabBarLabelStyle: {
-          fontFamily: "roboto",
+          fontFamily: "mn-r",
         },
       }}
     >
