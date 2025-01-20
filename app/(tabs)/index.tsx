@@ -3,11 +3,12 @@ import { Text, Button } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { Link } from "expo-router";
 import { Specialist } from "@/models/Specialist";
-import { api } from "@/lib/apiClient";
 import { useAlert } from "@/hooks/useAlert";
+import { useApi } from "@/hooks/useApi";
 
 const Explore = () => {
-    const { showAlert } = useAlert()
+  const { showAlert } = useAlert();
+  const api = useApi()
   const [specialists, setSpecialists] = useState<Specialist[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -15,11 +16,11 @@ const Explore = () => {
     const getSpecialists = async () => {
       try {
         setLoading(true);
-        const res = await api.get<Specialist[]>("/specialists");
-        setSpecialists(res.data);
+        const res = await api.specialist.getAll();
+        setSpecialists(res);
       } catch (error) {
         console.log("Error getting specialists");
-        showAlert("Error al cargar especialistas")
+        showAlert("Error al cargar especialistas");
       } finally {
         setLoading(false);
       }
@@ -43,7 +44,7 @@ const Explore = () => {
       <Button
         mode="contained"
         onPress={() => {
-          showAlert("test")
+          showAlert("test");
         }}
       >
         Mostrar error
