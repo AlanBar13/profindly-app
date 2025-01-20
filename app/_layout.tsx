@@ -21,6 +21,7 @@ import "react-native-reanimated";
 import { useColorScheme } from "react-native";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { tokenCache } from "@/lib/cache";
+import AlertProvider from "@/hooks/useAlert";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -67,12 +68,17 @@ export default function RootLayout() {
   return (
     <PaperProvider theme={paperTheme}>
       <ThemeProvider value={paperTheme}>
-        <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-          <ClerkLoaded>
-            <RootLayoutNav />
-            <StatusBar style="auto" />
-          </ClerkLoaded>
-        </ClerkProvider>
+        <AlertProvider>
+          <ClerkProvider
+            tokenCache={tokenCache}
+            publishableKey={publishableKey}
+          >
+            <ClerkLoaded>
+              <RootLayoutNav />
+              <StatusBar style="auto" />
+            </ClerkLoaded>
+          </ClerkProvider>
+        </AlertProvider>
       </ThemeProvider>
     </PaperProvider>
   );
@@ -93,13 +99,12 @@ function RootLayoutNav() {
         }}
       />
       <Stack.Screen
-        name="(modals)/sign-up"
+        name="auth/sign-up"
         options={{
-          title: "Crear cuenta",
+          title: "",
           headerTitleStyle: {
             fontFamily: "roboto",
           },
-          presentation: "modal",
         }}
       />
       <Stack.Screen name="specialist/[id]" options={{ headerTitle: "" }} />

@@ -16,9 +16,6 @@ const Login = () => {
   useWarmUpBrowser();
   const { startOAuthFlow: googleAuth } = useOAuth({ strategy: "oauth_google" });
   const { startOAuthFlow: appleAuth } = useOAuth({ strategy: "oauth_apple" });
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(true);
 
   const onSelectAuth = async (strategy: Strategy) => {
     const selectedAuth = {
@@ -40,32 +37,6 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-      {/* <View style={[styles.verticallySpaced, styles.mt20]}>
-        <TextInput
-          label="Email"
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-        />
-      </View>
-      <View style={styles.verticallySpaced}>
-        <TextInput
-          label="Contraseña"
-          value={password}
-          secureTextEntry={showPassword}
-          onChangeText={(text) => setPassword(text)}
-          autoCapitalize="none"
-          right={
-            <TextInput.Icon
-              icon="eye"
-              onPress={() => setShowPassword(!showPassword)}
-            />
-          }
-        />
-      </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button mode="contained">Iniciar sesión</Button>
-      </View> */}
       <View style={styles.verticallySpaced}>
         <Button
           icon={(props) => <Ionicons name="logo-google" {...props} />}
