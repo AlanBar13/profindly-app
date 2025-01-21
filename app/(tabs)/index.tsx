@@ -41,7 +41,7 @@ const Explore = () => {
       <Stack.Screen options={{
         header: () => <ExploreHeader onCategoryChange={onDataChange} />
       }} />
-      <Listings listings={[]} category={category} />
+      <Listings items={specialists} category={category} loading={loading} />
     </View>
   );
 };

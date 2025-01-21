@@ -22,14 +22,14 @@ interface Props {
 }
 
 const categories: Categories[] = [
-  { name: "General", icon: "medical-services" },
-  { name: "Interna", icon: "favorite" },
-  { name: "Mental", icon: "psychology" },
-  { name: "Pediatría", icon: "child-care" },
-  { name: "Cirugía", icon: "health-and-safety" },
-  { name: "Rehab", icon: "fitness-center" },
-  { name: "Dermatología", icon: "spa" },
-  { name: "Odontología", icon: "chair" },
+  { name: "Medicina", icon: "medical-services" },
+  { name: "Salud Mental", icon: "psychology" },
+  { name: "Salud Física", icon: "accessibility" },
+  { name: "Nutrición", icon: "food-bank" },
+  { name: "Oftalmología", icon: "remove-red-eye" },
+  { name: "Veterinaria", icon: "pets" },
+  { name: "Enfermería", icon: "health-and-safety" },
+  { name: "Odontología", icon: "mood" },
 ];
 
 const ExploreHeader = ({ onCategoryChange }: Props) => {
@@ -52,7 +52,7 @@ const ExploreHeader = ({ onCategoryChange }: Props) => {
     <SafeAreaView>
       <View style={styles.container}>
         <View style={styles.actionRow}>
-          <Link href="/(tabs)/appointment" asChild>
+          <Link href="/(modals)/schedule" asChild>
             <TouchableOpacity style={styles.searchButton}>
               <Ionicons name="search" size={24} />
               <View>

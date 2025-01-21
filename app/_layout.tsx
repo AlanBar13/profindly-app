@@ -53,6 +53,7 @@ export default function RootLayout() {
     colorScheme === "dark" ? CombinedDarkTheme : CombinedLightTheme;
   const [loaded] = useFonts({
     "mn-r": require("../assets/fonts/Montserrat-Regular.ttf"),
+    "mn-sb": require("../assets/fonts/Montserrat-SemiBold.ttf"),
     "mn-b": require("../assets/fonts/Montserrat-Bold.ttf"),
   });
 
