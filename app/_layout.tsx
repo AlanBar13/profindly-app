@@ -70,8 +70,8 @@ export default function RootLayout() {
   }
 
   return (
-    <PaperProvider theme={paperTheme}>
-      <ThemeProvider value={paperTheme}>
+    <PaperProvider theme={CombinedDarkTheme}>
+      <ThemeProvider value={CombinedDarkTheme}>
         <AlertProvider>
           <ClerkProvider
             tokenCache={tokenCache}
