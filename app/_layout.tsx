@@ -111,7 +111,7 @@ function RootLayoutNav() {
           },
         }}
       />
-      <Stack.Screen name="specialist/[id]" options={{ headerTitle: "" }} />
+      <Stack.Screen name="specialist/[id]" options={{ headerTitle: "", headerTransparent: true }} />
       <Stack.Screen
         name="(modals)/schedule"
         options={{

@@ -13,4 +13,10 @@ export class SpecialistService {
 
     return res.data;
   }
+
+  async getById(id: string) {
+    const res = await this._api.get<Specialist>(`/specialists/${id}`);
+
+    return res.data;
+  }
 }

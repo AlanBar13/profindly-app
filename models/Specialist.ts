@@ -4,6 +4,8 @@ export interface Specialist {
   _id: string;
   prefix: string;
   brief_description: string;
+  photo_link: string;
+  description: string;
   links: string[];
   budget_range: number[];
   schedule: string;
