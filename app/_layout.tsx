@@ -15,7 +15,7 @@ import { useFonts } from "expo-font";
 import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { PropsWithChildren, useEffect } from "react";
+import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { TouchableOpacity, useColorScheme } from "react-native";

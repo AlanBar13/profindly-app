@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { router, Redirect } from "expo-router";
+import { router } from "expo-router";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { TextInput, Button, HelperText, Text, Chip } from "react-native-paper";
 import { Colors } from "@/constants/Colors";

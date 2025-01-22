@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Specialist } from "@/models/Specialist";
 import { Link } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";

@@ -1,6 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
-import { Colors } from '@/constants/Colors'
+import { View, Text } from 'react-native'
 
 const ModalHeaderText = () => {
   return (
