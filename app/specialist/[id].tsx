@@ -21,6 +21,7 @@ import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { ActivityIndicator, Text } from "react-native-paper";
 import * as Linking from "expo-linking";
+import { defaulStyles } from "@/constants/Styles";
 
 const { width } = Dimensions.get("window");
 const IMG_HEIGHT = 300;
@@ -205,7 +206,7 @@ const Page = () => {
         </View>
       </Animated.ScrollView>
 
-      <Animated.View style={styles.footer} entering={SlideInDown.delay(200)}>
+      <Animated.View style={defaulStyles.footer} entering={SlideInDown.delay(200)}>
         <View
           style={{
             flexDirection: "row",
@@ -221,9 +222,9 @@ const Page = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.btn, { paddingRight: 20, paddingLeft: 20 }]}
+            style={[defaulStyles.btn, { paddingRight: 20, paddingLeft: 20 }]}
           >
-            <Text style={styles.btnText}>Agendar Cita</Text>
+            <Text style={defaulStyles.btnText}>Agendar Cita</Text>
           </TouchableOpacity>
         </View>
       </Animated.View>
@@ -317,30 +318,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 10,
     fontFamily: "mn-r",
-  },
-  footer: {
-    position: "absolute",
-    height: 100,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: Colors.dark.background,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderTopColor: "grey",
-    borderTopWidth: StyleSheet.hairlineWidth,
-  },
-  btn: {
-    backgroundColor: Colors.dark.primary,
-    height: 50,
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  btnText: {
-    color: Colors.dark.background,
-    fontSize: 16,
-    fontFamily: "mn-b",
   },
 });
 

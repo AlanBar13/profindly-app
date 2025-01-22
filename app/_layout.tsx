@@ -12,23 +12,25 @@ import {
 import merge from "deepmerge";
 import { Colors } from "@/constants/Colors";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { PropsWithChildren, useEffect } from "react";
 import "react-native-reanimated";
 
-import { useColorScheme } from "react-native";
+import { TouchableOpacity, useColorScheme } from "react-native";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { tokenCache } from "@/lib/cache";
 import AlertProvider from "@/hooks/useAlert";
 import ApiProvider from "@/hooks/useApi";
+import { Ionicons } from "@expo/vector-icons";
+import ModalHeaderText from "@/components/ModalHeaderText";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 // Overwrite it on the current theme
-const customDarkTheme = { ...MD3DarkTheme, colors: Colors.dark };
+const customDarkTheme = { ...MD3DarkTheme, colors: Colors.dark, };
 const customLightTheme = { ...MD3LightTheme, colors: Colors.light };
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
@@ -111,12 +113,31 @@ function RootLayoutNav() {
           },
         }}
       />
-      <Stack.Screen name="specialist/[id]" options={{ headerTitle: "", headerTransparent: true }} />
       <Stack.Screen
-        name="(modals)/schedule"
+        name="specialist/[id]"
+        options={{ headerTitle: "", headerTransparent: true }}
+      />
+      <Stack.Screen
+        name="(modals)/filter"
         options={{
           animation: "fade",
           presentation: "transparentModal",
+          headerTransparent: true,
+          headerTitle: () => <ModalHeaderText />,
+          headerLeft: () => (
+            <TouchableOpacity
+              onPressIn={() => router.back()}
+              style={{
+                backgroundColor: "#fff",
+                borderBlockColor: "grey",
+                borderRadius: 20,
+                borderWidth: 1,
+                padding: 4,
+              }}
+            >
+              <Ionicons name="close-outline" size={28} />
+            </TouchableOpacity>
+          ),
         }}
       />
     </Stack>
