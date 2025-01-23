@@ -13,3 +13,5 @@ export interface User {
   login_type: string;
   auth_id: string;
 }
+
+export interface CreateUserData extends Omit<User, "_id" | "role"> {}

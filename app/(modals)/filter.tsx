@@ -12,10 +12,13 @@ import { Ionicons } from "@expo/vector-icons";
 import FilterTextInput from "@/components/FilterTextInput";
 import NumberSelector from "@/components/NumberSelector";
 import { autocompleteSpecialist } from "@/services/specialist.service";
+import { useQueryClient } from "@tanstack/react-query";
+
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
 
 const Page = () => {
+  const queryClient = useQueryClient();
   const [openCard, setOpenCard] = useState(0);
   const [filterForm, setFilterForm] = useState<FilterForm>({
     specialty: "",
@@ -32,15 +35,29 @@ const Page = () => {
   };
 
   const getSpecialtyOptions = async (text: string) => {
-    const options = await autocompleteSpecialist(text, "speciality")
+    try {
+      const data = await queryClient.fetchQuery({
+        queryKey: ["autocompleteSpecialist", text, "speciality"],
+        queryFn: () => autocompleteSpecialist(text, "speciality"),
+      });
 
-    setSpecialtyOptions(options);
+      setSpecialtyOptions(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getLocationOptions = async (text: string) => {
-    const options = await autocompleteSpecialist(text, "location")
+    try {
+      const data = await queryClient.fetchQuery({
+        queryKey: ["autocompleteLocation", text, "location"],
+        queryFn: () => autocompleteSpecialist(text, "location"),
+      });
 
-    setLocationOptions(options);
+      setLocationOptions(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSpecialtyChange = (text: string) => {

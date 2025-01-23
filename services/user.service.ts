@@ -1,7 +1,7 @@
 import { api } from "@/lib/apiClient";
-import { User } from "@/models/User";
+import { User, CreateUserData } from "@/models/User";
 
-export async function createUser(data: User): Promise<User> {
+export async function createUser(data: CreateUserData): Promise<User> {
   return (await api.post<User>("/users", data)).data;
 }
 
