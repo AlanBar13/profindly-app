@@ -19,4 +19,10 @@ export class SpecialistService {
 
     return res.data;
   }
+
+  async autocomplete(query: string, field: string) {
+    const res = await this._api.get<string[]>(`/specialists/autocomplete?query=${query}&field=${field}`);
+
+    return res.data;
+  }
 }
