@@ -1,28 +1,20 @@
+import { api } from "@/lib/apiClient";
 import { Specialist } from "@/models/Specialist";
-import { AxiosInstance } from "axios";
 
-export class SpecialistService {
-  private _api: AxiosInstance;
+export async function getAllSpecialists() {
+  const res = await api.get<Specialist[]>("/specialists");
 
-  constructor(api: AxiosInstance) {
-    this._api = api;
-  }
+  return res.data;
+}
 
-  async getAll() {
-    const res = await this._api.get<Specialist[]>("/specialists");
+export async function getSpecialistById(id: string) {
+  const res = await api.get<Specialist>(`/specialists/${id}`);
 
-    return res.data;
-  }
+  return res.data;
+}
 
-  async getById(id: string) {
-    const res = await this._api.get<Specialist>(`/specialists/${id}`);
+export async function autocompleteSpecialist(query: string, field: string) {
+  const res = await api.get<string[]>(`/specialists/autocomplete?query=${query}&field=${field}`);
 
-    return res.data;
-  }
-
-  async autocomplete(query: string, field: string) {
-    const res = await this._api.get<string[]>(`/specialists/autocomplete?query=${query}&field=${field}`);
-
-    return res.data;
-  }
+  return res.data;
 }

@@ -1,32 +1,34 @@
 import { View } from "react-native";
-import {useEffect} from "react";
-import { Text, Button } from "react-native-paper";
+import { Text, Button, ActivityIndicator } from "react-native-paper";
 import { Link } from "expo-router";
 import { useUser, useAuth } from "@clerk/clerk-expo";
-import { useApi } from "@/hooks/useApi";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getUserProfile } from "@/services/user.service";
 
 const Profile = () => {
   const { isSignedIn, signOut, getToken } = useAuth();
   const { user } = useUser();
-  const api = useApi()
-  
-  useEffect(() => {
-    const getProfile = async () => {
-      const token = await getToken();
-      console.log(token)
-      const res = await api.user.getProfile(token)
-      console.log(res)
-    }
+  const queryClient = useQueryClient();
 
-    getProfile()
-  }, [])
+  const {data: profile, isLoading, error} = useQuery({
+    queryKey: ["profile"],
+    enabled: isSignedIn,
+    retry: false,
+    queryFn: async () => getUserProfile(await getToken()),
+  });
+
+
+  const handleSignOut = async () => {
+    await signOut();
+    queryClient.removeQueries({ queryKey: ['profile'] });
+  };
 
   return (
     <View>
       <Text>Profile {user && user.firstName}</Text>
-
+      <Text>{JSON.stringify(profile)}</Text>
       {isSignedIn ? (
-        <Button onPress={() => signOut()} mode="contained">
+        <Button onPress={handleSignOut} mode="contained">
           Cerrar Sesion
         </Button>
       ) : (
@@ -34,6 +36,8 @@ const Profile = () => {
           <Button mode="contained">Iniciar Sesion</Button>
         </Link>
       )}
+      {isLoading && <ActivityIndicator />}
+      {error && <Text>Error: {error.message}</Text>}
     </View>
   );
 };

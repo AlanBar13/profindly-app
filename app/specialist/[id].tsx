@@ -7,9 +7,7 @@ import {
 } from "react-native";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation, router } from "expo-router";
-import { useApi } from "@/hooks/useApi";
-import { Specialist } from "@/models/Specialist";
-import { useAlert } from "@/hooks/useAlert";
+import { useQuery } from "@tanstack/react-query";
 import Animated, {
   SlideInDown,
   interpolate,
@@ -19,37 +17,30 @@ import Animated, {
 } from "react-native-reanimated";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import { ActivityIndicator, Text } from "react-native-paper";
+import { ActivityIndicator, Snackbar, Text } from "react-native-paper";
 import * as Linking from "expo-linking";
 import { defaulStyles } from "@/constants/Styles";
+import { getSpecialistById } from "@/services/specialist.service";
 
 const { width } = Dimensions.get("window");
 const IMG_HEIGHT = 300;
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { showAlert } = useAlert();
-  const api = useApi();
-  const [specialist, setSpecialist] = useState<Specialist | null>(null);
-  const [loading, setLoading] = useState(false);
   const scrollOffset = useSharedValue(0);
   const navigation = useNavigation();
+  const [errorVisible, setErrorVisible] = useState(false);
+
+  const { data: specialist, isLoading, error } = useQuery({
+    queryKey: ["specialist", id],
+    queryFn: () => getSpecialistById(id),
+  });
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        setLoading(true);
-        const specialist = await api.specialist.getById(id);
-        setSpecialist(specialist);
-      } catch (error) {
-        showAlert("Error al obtener el especialista");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getData();
-  }, []);
+    if (error) {
+      setErrorVisible(true);
+    }
+  }, [error]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -134,7 +125,7 @@ const Page = () => {
     };
   }, []);
 
-  if (loading || !specialist) {
+  if (isLoading || !specialist) {
     return (
       <View
         style={[
@@ -228,6 +219,9 @@ const Page = () => {
           </TouchableOpacity>
         </View>
       </Animated.View>
+      <Snackbar visible={errorVisible} onDismiss={() => setErrorVisible(false)} action={{ label: "Cerrar" }}>
+        <Text>Error al obtener el especialista</Text>
+      </Snackbar>
     </View>
   );
 };

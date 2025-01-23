@@ -5,8 +5,9 @@ import { TextInput, Button, HelperText, Text, Chip } from "react-native-paper";
 import { Colors } from "@/constants/Colors";
 import { useUser } from "@clerk/clerk-expo";
 import { useAlert } from "@/hooks/useAlert";
-import { api } from "@/lib/apiClient";
 import { AxiosError } from "axios";
+import { createUser } from "@/services/user.service";
+import { CreateUserData } from "@/models/User";
 
 const SignUp = () => {
   const { user } = useUser();
@@ -20,29 +21,32 @@ const SignUp = () => {
   const signUp = async () => {
     try {
       setLoading(true);
-      await user?.update({
-        firstName: name,
-        lastName: lastname,
-        unsafeMetadata: {
-          gender,
-          onboarding_completed: true
-        },
-      });
-      await user?.reload();
-      await api.post("/users", {
-        name,
-        lastname,
-        email: user?.primaryEmailAddress?.emailAddress,
-        login_type: "social",
-        auth_id: user?.id,
-      });
-
-      setName("");
-      setLastname("");
-      setGender("");
-      setError("");
-      // Go to home route
-      router.replace("/");
+      if (user && user.primaryEmailAddress) {
+        await user.update({
+          firstName: name,
+          lastName: lastname,
+          unsafeMetadata: {
+            gender,
+            onboarding_completed: true
+          },
+        });
+        await user.reload();
+        const userData: CreateUserData = {
+          name,
+          lastname,
+          email: user.primaryEmailAddress?.emailAddress,
+          login_type: "social",
+          auth_id: user.id,
+        }
+        await createUser(userData);
+  
+        setName("");
+        setLastname("");
+        setGender("");
+        setError("");
+        // Go to home route
+        router.replace("/");
+      }
     } catch (error) {
       const err = error as AxiosError;
       if (err.response?.status === 403) {
