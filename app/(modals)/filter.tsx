@@ -11,13 +11,11 @@ import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import FilterTextInput from "@/components/FilterTextInput";
 import NumberSelector from "@/components/NumberSelector";
-import { useApi } from "@/hooks/useApi";
-
+import { autocompleteSpecialist } from "@/services/specialist.service";
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
 
 const Page = () => {
-  const api = useApi();
   const [openCard, setOpenCard] = useState(0);
   const [filterForm, setFilterForm] = useState<FilterForm>({
     specialty: "",
@@ -34,13 +32,13 @@ const Page = () => {
   };
 
   const getSpecialtyOptions = async (text: string) => {
-    const options = await api.specialist.autocomplete(text, "speciality");
+    const options = await autocompleteSpecialist(text, "speciality")
 
     setSpecialtyOptions(options);
   };
 
   const getLocationOptions = async (text: string) => {
-    const options = await api.specialist.autocomplete(text, "location");
+    const options = await autocompleteSpecialist(text, "location")
 
     setLocationOptions(options);
   };

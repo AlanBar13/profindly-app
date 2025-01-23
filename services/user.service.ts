@@ -1,24 +1,16 @@
+import { api } from "@/lib/apiClient";
 import { User } from "@/models/User";
-import { AxiosInstance } from "axios";
 
-export class UserService {
-  private _api: AxiosInstance;
+export async function createUser(data: User): Promise<User> {
+  return (await api.post<User>("/users", data)).data;
+}
 
-  constructor(api: AxiosInstance) {
-    this._api = api;
-  }
+export async function getUserProfile(token: string | null) {
+  const res = await api.get<User>("/users/profile", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-  async create(data: User): Promise<User> {
-    return (await this._api.post<User>("/users", data)).data;
-  }
-
-  async getProfile(token: string | null) {
-    const res = await this._api.get<User>("/users/profile", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    return res.data;
-  }
+  return res.data;
 }

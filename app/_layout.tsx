@@ -18,19 +18,31 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
 
-import { TouchableOpacity, useColorScheme } from "react-native";
+import {
+  AppStateStatus,
+  Platform,
+  TouchableOpacity,
+  useColorScheme,
+} from "react-native";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { tokenCache } from "@/lib/cache";
 import AlertProvider from "@/hooks/useAlert";
 import ApiProvider from "@/hooks/useApi";
 import { Ionicons } from "@expo/vector-icons";
 import ModalHeaderText from "@/components/ModalHeaderText";
+import {
+  focusManager,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { useAppState } from "@/hooks/useAppState";
+import { useOnlineManager } from "@/hooks/useOnlineManager";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 // Overwrite it on the current theme
-const customDarkTheme = { ...MD3DarkTheme, colors: Colors.dark, };
+const customDarkTheme = { ...MD3DarkTheme, colors: Colors.dark };
 const customLightTheme = { ...MD3LightTheme, colors: Colors.light };
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
@@ -49,7 +61,18 @@ if (!publishableKey) {
   );
 }
 
+// React Query Client
+const queryClient = new QueryClient();
+function onAppStateChange(status: AppStateStatus) {
+  if (Platform.OS !== "web") {
+    focusManager.setFocused(status === "active");
+  }
+}
+
 export default function RootLayout() {
+  useOnlineManager();
+
+  useAppState(onAppStateChange);
   const colorScheme = useColorScheme();
   const paperTheme =
     colorScheme === "dark" ? CombinedDarkTheme : CombinedLightTheme;
@@ -78,10 +101,10 @@ export default function RootLayout() {
             publishableKey={publishableKey}
           >
             <ClerkLoaded>
-              <ApiProvider>
+              <QueryClientProvider client={queryClient}>
                 <RootLayoutNav />
                 <StatusBar style="auto" />
-              </ApiProvider>
+              </QueryClientProvider>
             </ClerkLoaded>
           </ClerkProvider>
         </AlertProvider>

@@ -3,23 +3,18 @@ import {useEffect} from "react";
 import { Text, Button } from "react-native-paper";
 import { Link } from "expo-router";
 import { useUser, useAuth } from "@clerk/clerk-expo";
-import { useApi } from "@/hooks/useApi";
+import { useQuery } from "@tanstack/react-query";
+import { getUserProfile } from "@/services/user.service";
 
 const Profile = () => {
   const { isSignedIn, signOut, getToken } = useAuth();
   const { user } = useUser();
-  const api = useApi()
   
-  useEffect(() => {
-    const getProfile = async () => {
-      const token = await getToken();
-      console.log(token)
-      const res = await api.user.getProfile(token)
-      console.log(res)
-    }
-
-    getProfile()
-  }, [])
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: async () => getUserProfile(await getToken()),
+  });
+  console.log(profile)
 
   return (
     <View>
