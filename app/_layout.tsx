@@ -129,9 +129,15 @@ function RootLayoutNav() {
         name="auth/sign-up"
         options={{
           title: "",
+          headerTransparent: true,
           headerTitleStyle: {
             fontFamily: "mn-r",
           },
+          headerLeft: () => (
+            <TouchableOpacity onPressIn={() => router.back()}>
+              <Ionicons name="close-outline" size={28} color="#fff" />
+            </TouchableOpacity>
+          ),
         }}
       />
       <Stack.Screen

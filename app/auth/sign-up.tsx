@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { router } from "expo-router";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { TextInput, Button, HelperText, Text, Chip } from "react-native-paper";
 import { Colors } from "@/constants/Colors";
 import { useUser } from "@clerk/clerk-expo";
@@ -8,6 +8,7 @@ import { useAlert } from "@/hooks/useAlert";
 import { AxiosError } from "axios";
 import { createUser } from "@/services/user.service";
 import { CreateUserData } from "@/models/User";
+import { defaulStyles } from "@/constants/Styles";
 
 const SignUp = () => {
   const { user } = useUser();
@@ -27,7 +28,7 @@ const SignUp = () => {
           lastName: lastname,
           unsafeMetadata: {
             gender,
-            onboarding_completed: true
+            onboarding_completed: true,
           },
         });
         await user.reload();
@@ -38,9 +39,9 @@ const SignUp = () => {
           gender,
           login_type: "social",
           auth_id: user.id,
-        }
+        };
         await createUser(userData);
-  
+
         setName("");
         setLastname("");
         setGender("");
@@ -50,6 +51,7 @@ const SignUp = () => {
       }
     } catch (error) {
       const err = error as AxiosError;
+      console.log(err.response?.data);
       if (err.response?.status === 403) {
         showAlert(`El usuario ya existe`);
       } else {
@@ -67,33 +69,45 @@ const SignUp = () => {
   return (
     <ScrollView style={styles.container}>
       <View>
-        <Text variant="headlineMedium">Completa tu cuenta</Text>
-        <Text>
-          Complreta tu cuenta para poder acceder a los miles de especialistas
+        <Text style={{ fontFamily: "mn-sb" }} variant="headlineMedium">
+          Completa tu cuenta
+        </Text>
+        <Text style={{ fontFamily: "mn-r", fontSize: 16 }}>
+          Completa tu cuenta para poder contactar a los miles de especialistas
           que tenemos disponibles
         </Text>
       </View>
       <View style={{ marginTop: 10 }}>
         <TextInput
           label="Nombre(s)"
+          outlineStyle={{ borderRadius: 10 }}
+          contentStyle={{ fontFamily: "mn-r" }}
+          mode="outlined"
           value={name}
           onChangeText={(text) => setName(text)}
           style={styles.input}
         />
         <TextInput
           label="Apellido(s)"
+          outlineStyle={{ borderRadius: 10 }}
+          contentStyle={{ fontFamily: "mn-r" }}
+          mode="outlined"
           value={lastname}
           onChangeText={(text) => setLastname(text)}
           style={styles.input}
         />
-        <Text variant="headlineSmall">Genero</Text>
-        <Text>Selecciona tu genero</Text>
+        <Text style={{ fontFamily: "mn-sb" }} variant="headlineSmall">
+          Genero
+        </Text>
+        <Text style={{ fontFamily: "mn-r", fontSize: 16 }}>
+          Selecciona tu genero
+        </Text>
         <View style={styles.optionContainer}>
           <Chip
             style={[styles.option, gender === "male" && styles.optionSelected]}
             onPress={() => selectGender("male")}
           >
-            Hombre
+            <Text style={{ fontFamily: "mn-r" }}>Hombre</Text>
           </Chip>
           <Chip
             style={[
@@ -102,13 +116,13 @@ const SignUp = () => {
             ]}
             onPress={() => selectGender("female")}
           >
-            Mujer
+            <Text style={{ fontFamily: "mn-r" }}>Mujer</Text>
           </Chip>
           <Chip
             style={[styles.option, gender === "other" && styles.optionSelected]}
             onPress={() => selectGender("other")}
           >
-            Otro
+            <Text style={{ fontFamily: "mn-r" }}>Otro</Text>
           </Chip>
         </View>
       </View>
@@ -118,9 +132,9 @@ const SignUp = () => {
       </HelperText>
 
       <View>
-        <Button loading={loading} onPress={() => signUp()} mode="contained">
-          Crear cuenta
-        </Button>
+        <TouchableOpacity style={defaulStyles.btn} onPress={() => signUp()}>
+          <Text style={defaulStyles.btnText}>Crear cuenta</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -128,6 +142,7 @@ const SignUp = () => {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 100,
     padding: 12,
     height: "100%",
     backgroundColor: Colors.dark.background,

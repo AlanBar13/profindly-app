@@ -1,4 +1,10 @@
-import { StyleSheet, TouchableOpacity, View, ScrollView, TextInput } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  ScrollView,
+  TextInput,
+} from "react-native";
 import { Text, ActivityIndicator } from "react-native-paper";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { Link } from "expo-router";
@@ -19,7 +25,7 @@ const Profile = () => {
     data: profile,
     isLoading,
     error,
-    refetch
+    refetch,
   } = useQuery({
     queryKey: ["profile"],
     enabled: isSignedIn,
@@ -49,6 +55,8 @@ const Profile = () => {
   return (
     <SafeAreaView>
       <View style={styles.container}>
+        {isLoading && <ActivityIndicator />}
+        {error && <Text>Error al cargar perfil: {error.message}</Text>}
         {isSignedIn ? (
           <Animated.View entering={FadeIn.duration(500)}>
             <Text
@@ -128,18 +136,22 @@ const Profile = () => {
               <View style={styles.profileItem}>
                 <Text style={{ fontFamily: "mn-sb" }}>Lenguaje:</Text>
                 <Text style={{ fontFamily: "mn-r" }}>
-                  {profile?.preferred_language !== null ? profile?.preferred_language : "N/A"}
+                  {profile?.preferred_language !== null
+                    ? profile?.preferred_language
+                    : "N/A"}
                 </Text>
               </View>
               <View style={styles.divider} />
               <View style={styles.profileItem}>
                 <Text style={{ fontFamily: "mn-sb" }}>Ubicacion:</Text>
                 <Text style={{ fontFamily: "mn-r" }}>
-                  {profile?.preferred_location !== null ? profile?.preferred_location : "N/A"}
+                  {profile?.preferred_location !== null
+                    ? profile?.preferred_location
+                    : "N/A"}
                 </Text>
               </View>
               <View style={styles.divider} />
-              
+
               <TouchableOpacity
                 style={[
                   defaulStyles.btn,
@@ -173,9 +185,6 @@ const Profile = () => {
             </Link>
           </View>
         )}
-
-        {isLoading && <ActivityIndicator />}
-        {error && <Text>Error al cargar perfil: {error.message}</Text>}
       </View>
     </SafeAreaView>
   );
