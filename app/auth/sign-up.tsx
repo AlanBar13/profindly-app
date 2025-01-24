@@ -34,7 +34,8 @@ const SignUp = () => {
         const userData: CreateUserData = {
           name,
           lastname,
-          email: user.primaryEmailAddress?.emailAddress,
+          email: user.primaryEmailAddress.emailAddress,
+          gender,
           login_type: "social",
           auth_id: user.id,
         }
