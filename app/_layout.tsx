@@ -120,10 +120,8 @@ function RootLayoutNav() {
       <Stack.Screen
         name="(modals)/login"
         options={{
-          title: "Iniciar sesion",
-          headerTitleStyle: {
-            fontFamily: "mn-r",
-          },
+          headerTitle: "",
+          headerTransparent: true,
           presentation: "modal",
         }}
       />
