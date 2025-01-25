@@ -23,6 +23,7 @@ import {
   Platform,
   TouchableOpacity,
   useColorScheme,
+  View,
 } from "react-native";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { tokenCache } from "@/lib/cache";
@@ -37,6 +38,7 @@ import {
 } from "@tanstack/react-query";
 import { useAppState } from "@/hooks/useAppState";
 import { useOnlineManager } from "@/hooks/useOnlineManager";
+import ScheduleHeader from "@/components/ScheduleHeader";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -138,6 +140,13 @@ function RootLayoutNav() {
               <Ionicons name="close-outline" size={28} color="#fff" />
             </TouchableOpacity>
           ),
+        }}
+      />
+      <Stack.Screen
+        name="schedule/[id]"
+        options={{
+          title: "",
+          headerTransparent: true,
         }}
       />
       <Stack.Screen

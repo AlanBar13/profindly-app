@@ -21,17 +21,23 @@ import { ActivityIndicator, Snackbar, Text } from "react-native-paper";
 import * as Linking from "expo-linking";
 import { defaulStyles } from "@/constants/Styles";
 import { getSpecialistById } from "@/services/specialist.service";
+import { useAuth } from "@clerk/clerk-expo";
 
 const { width } = Dimensions.get("window");
 const IMG_HEIGHT = 300;
 
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { isSignedIn } = useAuth();
   const scrollOffset = useSharedValue(0);
   const navigation = useNavigation();
   const [errorVisible, setErrorVisible] = useState(false);
 
-  const { data: specialist, isLoading, error } = useQuery({
+  const {
+    data: specialist,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["specialist", id],
     queryFn: () => getSpecialistById(id),
   });
@@ -98,6 +104,14 @@ const Page = () => {
     },
   });
 
+  const goToSchedulePage = () => {
+    if (isSignedIn) {
+      router.push(`/schedule/${id}`);
+    } else {
+      router.push(`/(modals)/login`);
+    }
+  };
+
   const imageAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -156,7 +170,11 @@ const Page = () => {
             style={styles.name}
           >{`${specialist.prefix} ${specialist.user.name} ${specialist.user.lastname}`}</Text>
           <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
-            <Ionicons name="location-outline" size={18} color={Colors.dark.primary}/>
+            <Ionicons
+              name="location-outline"
+              size={18}
+              color={Colors.dark.primary}
+            />
             <Text style={styles.location}>{specialist.location}</Text>
           </View>
           <Text style={styles.briefText}>{specialist.brief_description}</Text>
@@ -197,7 +215,10 @@ const Page = () => {
         </View>
       </Animated.ScrollView>
 
-      <Animated.View style={defaulStyles.footer} entering={SlideInDown.delay(200)}>
+      <Animated.View
+        style={defaulStyles.footer}
+        entering={SlideInDown.delay(200)}
+      >
         <View
           style={{
             flexDirection: "row",
@@ -214,12 +235,17 @@ const Page = () => {
 
           <TouchableOpacity
             style={[defaulStyles.btn, { paddingRight: 20, paddingLeft: 20 }]}
+            onPress={goToSchedulePage}
           >
             <Text style={defaulStyles.btnText}>Agendar Cita</Text>
           </TouchableOpacity>
         </View>
       </Animated.View>
-      <Snackbar visible={errorVisible} onDismiss={() => setErrorVisible(false)} action={{ label: "Cerrar" }}>
+      <Snackbar
+        visible={errorVisible}
+        onDismiss={() => setErrorVisible(false)}
+        action={{ label: "Cerrar" }}
+      >
         <Text>Error al obtener el especialista</Text>
       </Snackbar>
     </View>
