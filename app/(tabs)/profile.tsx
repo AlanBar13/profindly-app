@@ -175,8 +175,8 @@ const Profile = () => {
               style={{ fontFamily: "mn-r", marginBottom: 12 }}
               variant="bodyLarge"
             >
-              Si quieres tener acceso a mas funcionalidades, registrate dando
-              click en el siguiente boton:
+              Si quieres tener acceso a esta funcionalidad, registrate o inicia
+              sesion dando click en el siguiente boton:
             </Text>
             <Link href="/(modals)/login" asChild>
               <TouchableOpacity style={defaulStyles.btn}>

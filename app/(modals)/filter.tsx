@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useState } from "react";
+import React, { useState } from "react";
 import { BlurView } from "expo-blur";
 import Animated, {
   FadeIn,

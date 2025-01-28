@@ -61,9 +61,9 @@ const Schedule = () => {
       if (booking && service) {
         const bookingData: CreateBooking = {
           bookDate: date.format("YYYY/MM/DD"),
-          client_id: "6793c263d5679fd9d4a5eaa1", //TODO: get client id from user
+          client: "6793c263d5679fd9d4a5eaa1", //TODO: get client id from user
           endTime: booking.end,
-          service_id: service,
+          service: service,
           startTime: booking.start,
           status: "pending",
         };
@@ -91,7 +91,7 @@ const Schedule = () => {
       headerLeft: () => (
         <TouchableOpacity
           style={styles.roundButton}
-          onPressIn={() => router.replace(`/specialist/${id}`)} //use replace to avoid refetching booking data
+          onPressIn={() => router.back()}
         >
           <Ionicons name="chevron-back" size={24} color={"#000"} />
         </TouchableOpacity>

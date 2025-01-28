@@ -33,6 +33,7 @@ const Layout = () => {
         name="appointment"
         options={{
           tabBarLabel: "Citas",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons color={color} size={size} name="calendar-outline" />
           ),
