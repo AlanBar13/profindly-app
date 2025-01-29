@@ -2,9 +2,26 @@ import { api } from "@/lib/apiClient";
 import { Booking, BookingSlot, CreateBooking } from "@/models/Booking";
 import { Specialist } from "@/models/Specialist";
 
-export async function getAllSpecialists() {
-  const res = await api.get<Specialist[]>("/specialists");
+export async function getSpecialists(category?: string) {
+  const res = await api.get<Specialist[]>(`/specialists${category !== "none" ? `?category=${category}` : ""}`);
+  return res.data;
+}
 
+export async function getSpecialistsSearch(speciality?: string, location?: string, years?: string) {
+  let url = `/specialists?`;
+  if (speciality !== undefined && speciality !== "") {
+    url += `speciality=${encodeURIComponent(speciality)}&`;
+  }
+  if (location !== undefined && location !== "") {
+    url += `location=${encodeURIComponent(location)}&`;
+  }
+  if (years !== undefined && years !== "") {
+    url += `years=${encodeURIComponent(years)}&`;
+  }
+  // remove last &
+  url = url.slice(0, -1);
+  console.log("url", url);
+  const res = await api.get<Specialist[]>(url);
   return res.data;
 }
 

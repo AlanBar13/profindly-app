@@ -1,29 +1,36 @@
 import { StyleSheet, View } from "react-native";
 import { useState } from "react";
-import { Stack } from "expo-router";
-import { useAlert } from "@/hooks/useAlert";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import ExploreHeader from "@/components/ExploreHeader";
 import Listings from "@/components/Listings";
-import { getAllSpecialists } from "@/services/specialist.service";
+import { getSpecialists, getSpecialistsSearch } from "@/services/specialist.service";
 import { useRefreshOnFocus } from "@/hooks/useRefreshOnFocus";
 
 const Explore = () => {
-  const { showAlert } = useAlert();
-  const [category, setCategory] = useState("General");
+  const { speciality, location, years } = useLocalSearchParams<{speciality?: string, location?: string, years?: string}>();
+  const [category, setCategory] = useState<string>("none");
+  const [search, setSearch] = useState<boolean>(speciality !== undefined || location !== undefined || years !== undefined);
 
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ["specialists"],
-    queryFn: getAllSpecialists,
+    queryKey: ["specialists", category],
+    enabled: !search,
+    retry: false,
+    queryFn: () => getSpecialists(category),
   });
-  useRefreshOnFocus(refetch);
 
-  if (error) {
-    showAlert("Error al cargar especialistas");
-  }
+  const { data: searchData, isLoading: searchLoading, error: searchError } = useQuery({
+    queryKey: ["specialists", speciality, location, years],
+    enabled: search,
+    retry: false,
+    queryFn: () => getSpecialistsSearch(speciality, location, years),
+  });
+
+  useRefreshOnFocus(refetch);
 
   const onDataChange = (category: string) => {
     setCategory(category);
+    setSearch(false);
   };
 
   return (
@@ -33,7 +40,7 @@ const Explore = () => {
           header: () => <ExploreHeader onCategoryChange={onDataChange} />,
         }}
       />
-      <Listings items={data || []} category={category} loading={isLoading} />
+      <Listings items={search ? searchData || [] : data || []} loading={search ? searchLoading : isLoading} />
     </View>
   );
 };

@@ -10,22 +10,17 @@ import { useEffect, useRef } from "react";
 import { Specialist } from "@/models/Specialist";
 import { Link } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { Avatar } from "react-native-paper";
+import { ActivityIndicator, Avatar } from "react-native-paper";
 import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
 import { Colors } from "@/constants/Colors";
 
 interface Props {
   items: Specialist[];
   loading: boolean;
-  category: string;
 }
 
-const Listings = ({ items, category, loading }: Props) => {
+const Listings = ({ items, loading }: Props) => {
   const listRef = useRef<FlatList>(null);
-
-  useEffect(() => {
-    console.log("RELOAD");
-  }, [category]);
 
   const renderRow: ListRenderItem<Specialist> = ({ item }) => (
     <Link href={`/specialist/${item._id}`} asChild>
@@ -81,7 +76,27 @@ const Listings = ({ items, category, loading }: Props) => {
         showsVerticalScrollIndicator={false}
         renderItem={renderRow}
         ref={listRef}
-        data={loading ? [] : items}
+        data={items}
+        ListEmptyComponent={
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            }}
+          >
+            {loading ? (
+              <ActivityIndicator />
+            ) : (
+              <Text
+                style={{ fontFamily: "mn-sb", color: "#fff", fontSize: 16 }}
+              >
+                No se encontraron resultados
+              </Text>
+            )}
+          </View>
+        }
       ></FlatList>
     </View>
   );
@@ -93,7 +108,7 @@ const styles = StyleSheet.create({
     gap: 10,
     marginVertical: 10,
     backgroundColor: "#fff",
-    borderRadius: 22
+    borderRadius: 22,
   },
 });
 

@@ -24,8 +24,10 @@ const Appointments = () => {
   };
 
   useEffect(() => {
-    getBookingsData();
-  }, []);
+    if (isSignedIn) {
+      getBookingsData();
+    }
+  }, [isSignedIn]);
 
   const handleDeleteBooking = async (id: string) => {
     const token = await getToken();

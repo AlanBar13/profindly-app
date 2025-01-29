@@ -13,6 +13,7 @@ import { useRef, useState } from "react";
 import * as Haptics from "expo-haptics";
 
 interface Categories {
+  id: string;
   name: string;
   icon: keyof typeof MaterialIcons.glyphMap;
 }
@@ -22,14 +23,15 @@ interface Props {
 }
 
 const categories: Categories[] = [
-  { name: "Medicina", icon: "medical-services" },
-  { name: "Salud Mental", icon: "psychology" },
-  { name: "Salud Física", icon: "accessibility" },
-  { name: "Nutrición", icon: "food-bank" },
-  { name: "Oftalmología", icon: "remove-red-eye" },
-  { name: "Veterinaria", icon: "pets" },
-  { name: "Enfermería", icon: "health-and-safety" },
-  { name: "Odontología", icon: "mood" },
+  { id: "none", name: "Inicio", icon: "home" },
+  { id: "medicine", name: "Medicina", icon: "medical-services" },
+  { id: "mental-health", name: "Salud Mental", icon: "psychology" },
+  { id: "physical-health", name: "Salud Física", icon: "accessibility" },
+  { id: "nutrition", name: "Nutrición", icon: "food-bank" },
+  { id: "ophthalmology", name: "Oftalmología", icon: "remove-red-eye" },
+  { id: "vet", name: "Veterinaria", icon: "pets" },
+  { id: "nursing", name: "Enfermería", icon: "health-and-safety" },
+  { id: "dentistry", name: "Odontología", icon: "mood" },
 ];
 
 const ExploreHeader = ({ onCategoryChange }: Props) => {
@@ -46,7 +48,7 @@ const ExploreHeader = ({ onCategoryChange }: Props) => {
     });
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onCategoryChange(categories[index].name);
+    onCategoryChange(categories[index].id);
   };
   return (
     <SafeAreaView>

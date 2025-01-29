@@ -23,15 +23,23 @@ const Page = () => {
   const [filterForm, setFilterForm] = useState<FilterForm>({
     specialty: "",
     location: "",
-    experience: 1,
+    experience: 0,
   });
   const [specialtyOptions, setSpecialtyOptions] = useState<string[]>([]);
   const [locationOptions, setLocationOptions] = useState<string[]>([]);
 
   const submitFilters = () => {
-    // TODO: go to list with filters
-    console.log(filterForm);
-    router.back();
+    let queryParams = "";
+    if (filterForm.specialty !== "") {
+      queryParams += `speciality=${filterForm.specialty}`;
+    }
+    if (filterForm.location !== "") {
+      queryParams += `&location=${filterForm.location}`;
+    }
+    if (filterForm.experience !== 0) {
+      queryParams += `&years=${filterForm.experience}`;
+    }
+    router.push(`/?${queryParams}`);
   };
 
   const getSpecialtyOptions = async (text: string) => {
