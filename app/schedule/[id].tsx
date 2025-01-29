@@ -18,6 +18,7 @@ import {
 import { defaulStyles } from "@/constants/Styles";
 import { BookingSlot, CreateBooking } from "@/models/Booking";
 import { useAlert } from "@/hooks/useAlert";
+import { AxiosError } from "axios";
 
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
@@ -41,7 +42,7 @@ const Schedule = () => {
     enabled: !!service && !serviceLoading,
     queryFn: () =>
       getSpecialistScheduleByDate(service!, date.format("YYYY/MM/DD")),
-    refetchInterval: 10000, //refetch every 10 seconds
+    //refetchInterval: 10000, //refetch every 10 seconds
   });
 
   const handleSelectDate = (date: dayjs.Dayjs) => {
@@ -73,6 +74,8 @@ const Schedule = () => {
         showAlert("No se pudo crear la reserva, reintente mas tarde");
       }
     } catch (error) {
+      const err = error as AxiosError;
+      console.log(err.response?.data);
       showAlert("No se pudo crear la reserva, reintente mas tarde");
     } finally {
       setIsLoading(false);
@@ -126,6 +129,8 @@ const Schedule = () => {
                 selectedItemColor={Colors.dark.primary}
                 date={date}
                 onChange={({ date }) => handleSelectDate(dayjs(date))}
+                minDate={dayjs().subtract(1, "day")}
+                maxDate={dayjs().add(2, "week")}
               />
             </Animated.View>
           </>
