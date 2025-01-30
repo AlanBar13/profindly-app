@@ -11,25 +11,27 @@ import DateTimePicker from "react-native-ui-datepicker";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
 import {
-  createBooking,
-  getSpecialistScheduleByDate,
   getSpecialistService,
 } from "@/services/specialist.service";
+import { getSpecialistScheduleByDate, createBooking } from "@/services/bookings.service";
 import { defaulStyles } from "@/constants/Styles";
 import { BookingSlot, CreateBooking } from "@/models/Booking";
 import { useAlert } from "@/hooks/useAlert";
 import { AxiosError } from "axios";
+import { useAuth } from "@clerk/clerk-expo";
 
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
 
 const Schedule = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { getToken } = useAuth();
   const navigation = useNavigation();
   const { showAlert } = useAlert();
   const [date, setDate] = useState(dayjs());
   const [booking, setBooking] = useState<BookingSlot | null>(null);
   const [openCard, setOpenCard] = useState(0);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const { data: service, isLoading: serviceLoading } = useQuery({
@@ -62,13 +64,12 @@ const Schedule = () => {
       if (booking && service) {
         const bookingData: CreateBooking = {
           bookDate: date.format("YYYY/MM/DD"),
-          client: "6793c263d5679fd9d4a5eaa1", //TODO: get client id from user
           endTime: booking.end,
           service: service,
           startTime: booking.start,
-          status: "pending",
         };
-        await createBooking(bookingData);
+        const token = await getToken();
+        await createBooking(bookingData, token);
         router.replace(`/(tabs)/appointment`); //use replace to avoid refetching booking data to unMount component
       } else {
         showAlert("No se pudo crear la reserva, reintente mas tarde");

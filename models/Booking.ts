@@ -12,7 +12,8 @@ export interface Booking {
   status: string;
 }
 
-export interface CreateBooking extends Omit<Booking, "_id"> {}
+export interface CreateBooking extends Omit<Booking, "_id" | "client" | "status"> {}
+
 
 export interface BookingSlot {
   start: string;

@@ -1,5 +1,5 @@
 import { api } from "@/lib/apiClient";
-import { BookingsResponse } from "@/models/Booking";
+import { Booking, BookingSlot, BookingsResponse, CreateBooking } from "@/models/Booking";
 import { AxiosError } from "axios";
 
 export const getBookings = async (token: string | null) => {
@@ -25,3 +25,17 @@ export const deleteBooking = async (token: string | null, id: string) => {
   return response.data;
 };
 
+export async function getSpecialistScheduleByDate(id: string, date: string) {
+  const res = await api.get<BookingSlot[]>(
+    `/bookings/available?serviceId=${id}&date=${date}`
+  );
+  console.log("bookings called at", new Date().toISOString());
+  return res.data;
+}
+
+export async function createBooking(booking: CreateBooking, token: string | null) {
+  const res = await api.post<Booking>("/bookings", booking, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
