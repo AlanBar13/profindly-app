@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  ScrollView,
-  TextInput,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View, ScrollView } from "react-native";
 import { Text, ActivityIndicator } from "react-native-paper";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { Link } from "expo-router";
@@ -17,9 +11,12 @@ import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { UserRole } from "@/models/User";
 import { useRefreshOnFocus } from "@/hooks/useRefreshOnFocus";
+import useProfile from "@/hooks/useProfile";
 
 const Profile = () => {
   const { isSignedIn, signOut, getToken } = useAuth();
+  const setUser = useProfile((state) => state.setUser);
+  const unsetUser = useProfile((state) => state.unsetUser);
   const queryClient = useQueryClient();
   const {
     data: profile,
@@ -30,7 +27,11 @@ const Profile = () => {
     queryKey: ["profile"],
     enabled: isSignedIn,
     retry: false,
-    queryFn: async () => getUserProfile(await getToken()),
+    queryFn: async () => {
+      const user = await getUserProfile(await getToken());
+      setUser(user);
+      return user;
+    },
   });
 
   useRefreshOnFocus(refetch);
@@ -38,6 +39,7 @@ const Profile = () => {
   const handleSignOut = async () => {
     await signOut();
     queryClient.removeQueries({ queryKey: ["profile"] });
+    unsetUser();
   };
 
   const getGenderText = (gender?: string) => {
@@ -75,9 +77,11 @@ const Profile = () => {
                     Si quieres ser un especialista haz click en el siguiente
                     boton
                   </Text>
-                  <TouchableOpacity style={defaulStyles.btn}>
-                    <Text style={defaulStyles.btnText}>Ser Especialista</Text>
-                  </TouchableOpacity>
+                  <Link href="/specialist-form/welcome" asChild>
+                    <TouchableOpacity style={defaulStyles.btn}>
+                      <Text style={defaulStyles.btnText}>Ser Especialista</Text>
+                    </TouchableOpacity>
+                  </Link>
                 </View>
               )}
               <View

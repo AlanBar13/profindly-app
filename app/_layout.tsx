@@ -176,6 +176,11 @@ function RootLayoutNav() {
           ),
         }}
       />
+      <Stack.Screen
+        name="specialist-form"
+        options={{ headerShown: false }}
+      />
     </Stack>
   );
 }
+
