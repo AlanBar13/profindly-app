@@ -17,5 +17,14 @@ export interface Specialist {
   experience: number;
   rating?: number;
   reviews: string[];
+  category: string;
   user: User;
+}
+
+export interface CreateSpecialist extends Omit<Specialist, "_id" | "rating" | "reviews" | "user"> {}
+
+export interface SpecialistPhotoResponse {
+  isPublic: boolean
+  key: string
+  url: string
 }

@@ -1,14 +1,8 @@
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  ScrollView,
-  TextInput,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View, ScrollView } from "react-native";
 import { Text, ActivityIndicator } from "react-native-paper";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { Link } from "expo-router";
-import { useAuth } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserProfile } from "@/services/user.service";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,9 +11,13 @@ import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { UserRole } from "@/models/User";
 import { useRefreshOnFocus } from "@/hooks/useRefreshOnFocus";
+import useProfile from "@/hooks/useProfile";
 
 const Profile = () => {
   const { isSignedIn, signOut, getToken } = useAuth();
+  const { user } = useUser();
+  const setUser = useProfile((state) => state.setUser);
+  const unsetUser = useProfile((state) => state.unsetUser);
   const queryClient = useQueryClient();
   const {
     data: profile,
@@ -30,7 +28,11 @@ const Profile = () => {
     queryKey: ["profile"],
     enabled: isSignedIn,
     retry: false,
-    queryFn: async () => getUserProfile(await getToken()),
+    queryFn: async () => {
+      const user = await getUserProfile(await getToken());
+      setUser(user);
+      return user;
+    },
   });
 
   useRefreshOnFocus(refetch);
@@ -38,6 +40,7 @@ const Profile = () => {
   const handleSignOut = async () => {
     await signOut();
     queryClient.removeQueries({ queryKey: ["profile"] });
+    unsetUser();
   };
 
   const getGenderText = (gender?: string) => {
@@ -66,18 +69,33 @@ const Profile = () => {
               Hola, {profile?.name}
             </Text>
             <ScrollView>
-              {profile?.role !== UserRole.specialist && (
+              {profile?.role !== UserRole.specialist ||
+                (user?.publicMetadata.specialist_form_filled === false && (
+                  <View style={{ marginBottom: 12 }}>
+                    <Text
+                      style={{ fontFamily: "mn-r", marginBottom: 12 }}
+                      variant="bodyLarge"
+                    >
+                      Si quieres ser un especialista haz click en el siguiente
+                      boton
+                    </Text>
+                    <Link href="/specialist-form/welcome" asChild>
+                      <TouchableOpacity style={defaulStyles.btn}>
+                        <Text style={defaulStyles.btnText}>
+                          Ser Especialista
+                        </Text>
+                      </TouchableOpacity>
+                    </Link>
+                  </View>
+                ))}
+              {user?.publicMetadata.specialist_form_filled === true && (
                 <View style={{ marginBottom: 12 }}>
                   <Text
                     style={{ fontFamily: "mn-r", marginBottom: 12 }}
                     variant="bodyLarge"
                   >
-                    Si quieres ser un especialista haz click en el siguiente
-                    boton
+                    Tu solicitud para ser especialista está siendo revisada. Te avisaremos por correo cuando sea aceptada.
                   </Text>
-                  <TouchableOpacity style={defaulStyles.btn}>
-                    <Text style={defaulStyles.btnText}>Ser Especialista</Text>
-                  </TouchableOpacity>
                 </View>
               )}
               <View

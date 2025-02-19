@@ -19,7 +19,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.profindlyapp"
+      "package": "com.desscript.profindly"
     },
     "web": {
       "bundler": "metro",
@@ -35,6 +35,12 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#cebdff"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Esta app requiere los permisos para ver las fotos"
         }
       ]
     ],

@@ -1,13 +1,19 @@
 import { api } from "@/lib/apiClient";
-import { Specialist } from "@/models/Specialist";
-
+import { CreateSpecialist, Specialist, SpecialistPhotoResponse } from "@/models/Specialist";
+import FormData from "form-data";
 
 export async function getSpecialists(category?: string) {
-  const res = await api.get<Specialist[]>(`/specialists${category !== "none" ? `?category=${category}` : ""}`);
+  const res = await api.get<Specialist[]>(
+    `/specialists${category !== "none" ? `?category=${category}` : ""}`
+  );
   return res.data;
 }
 
-export async function getSpecialistsSearch(speciality?: string, location?: string, years?: string) {
+export async function getSpecialistsSearch(
+  speciality?: string,
+  location?: string,
+  years?: string
+) {
   let url = `/specialists?`;
   if (speciality !== undefined && speciality !== "") {
     url += `speciality=${encodeURIComponent(speciality)}&`;
@@ -43,4 +49,22 @@ export async function getSpecialistService(id: string) {
   const res = await api.get<string>(`/services/specialist/${id}`);
   console.log("service", res.data);
   return res.data;
+}
+
+export async function uploadSpecialistPhoto(formData: FormData) {
+  const res = await api.post<SpecialistPhotoResponse>(`/specialists/photo`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return res.data;
+}
+
+export async function createSpecialist(data: CreateSpecialist, token: string | null) {
+  await api.post(`/specialists`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
 }
