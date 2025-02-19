@@ -26,7 +26,6 @@ const Last = () => {
 
   const onSubmitPage = async () => {
     try {
-      console.log("submitting");
       setLoading(true);
       const token = await getToken();
 

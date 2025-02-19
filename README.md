@@ -1,50 +1,121 @@
-# Welcome to your Expo app 👋
+# Profindly Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A cross-platform mobile chat application built with Expo, allowing users to interact with specialists.
 
-## Get started
+## 🌟 Features
 
-1. Install dependencies
+- Find specialist
+- Schedule appointments with specialist
+- Cross-platform compatibility (iOS, Android)
+- Clean and intuitive UI with custom components
+- Dark/Light theme support
+- Secure API key management
 
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+- Expo CLI
+- Clerk API key
+
+### Environment Setup
+
+1. Create a `.env` file in the root directory:
+   ```bash
+   EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=clerk_publishable_key
+   EXPO_PUBLIC_BACKEND_URL=api_url
+   ```
+
+2. Install project dependencies:
    ```bash
    npm install
    ```
 
-2. Start the app
-
+3. Start the development server:
    ```bash
-    npx expo start
+   npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+## 🏗️ Project Structure
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+project-root/
+├── app/                   # Main application code
+│   ├── (tabs)/            # Tab-based navigation
+│        └── index.tsx     # Entry point
+│   ├── (modals)/          # Modals used
+│   ├── auth/              # Auth related pages
+│   ├── schedule/          # Schedule related pages
+│   ├── specialist/        # Specialist related pages
+│   ├── specialist-form/   # Specialist Form related pages
+│   ├── _layout.tsx        # Root layout configuration
+├── assets/                # Static assets
+├── components/            # Reusable UI components
+├── constants/             # App constants and theme
+├── context/              # React Context providers
+├── hooks/                # Custom React hooks
+├── services/             # API and utility services
+└── types/                # TypeScript type definitions
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🛠️ Development
 
-## Learn more
+### Adding New Features
 
-To learn more about developing your project with Expo, look at the following resources:
+1. **New Components**
+   - Place reusable components in `/components`
+   - Follow the existing component structure
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+2. **API Integration**
+   - Add new API services in `/services`
+   - Use environment variables for sensitive data
 
-## Join the community
+3. **Styling**
+   - Use theme constants from `/constants/Colors`
+   - Follow responsive design patterns
 
-Join our community of developers creating universal apps.
+### Running in Development
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+# Start Expo development server
+npx expo start
+
+# Run on iOS simulator
+npx expo run:ios
+
+# Run on Android emulator
+npx expo run:android
+```
+
+
+## 🔐 Security
+
+- Never commit the `.env` file
+- Keep API keys secure
+- Follow Expo's security best practices
+
+## 📚 Resources
+
+- [Expo Documentation](https://docs.expo.dev/)
+- [React Native Documentation](https://reactnative.dev/)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🆘 Support
+
+For support and questions:
+- Check the documentation
+- Open an issue in the repository
+- Contact the development team
