@@ -7,10 +7,7 @@ import { defaulStyles } from "@/constants/Styles";
 import useFormState from "@/hooks/useFormState";
 
 const Welcome = () => {
-  const setStep = useFormState((state) => state.setStep);
-
   const goToNextStep = () => {
-    setStep(1);
     router.push("/specialist-form/personal-info");
   };
 

@@ -1,26 +1,9 @@
 import { create } from "zustand";
+import { CreateSpecialist } from "@/models/Specialist";
 
-interface FormData {
-  prefix: string;
-  brief_description: string;
-  links: string[];
-  photo_link: string;
-  description: string;
-  budget_range: number[];
-  schedule: string;
-  location: string;
-  languages: string[];
-  speciality: string;
-  subspecialities: string[];
-  specialist_id: string;
-  experience: number;
-  category: string;
-}
 
 interface FormState {
-  data: FormData;
-  step: number;
-  setStep: (step: number) => void;
+  data: CreateSpecialist;
   setPrefix: (prefix: string) => void;
   setBriefDesc: (desc: string) => void;
   setLinks: (links: string) => void;
@@ -30,15 +13,18 @@ interface FormState {
   setSchedule: (schedule: string) => void;
   setLocation: (location: string) => void;
   setLanguages: (languages: string) => void;
-  setSpeciality: (speciality: string) => void;
-  setSubspecialities: (subspecialities: string) => void;
+  setSpeciality: (speciality: string[]) => void;
+  setSubspecialities: (subspecialities: string[]) => void;
+  setSpecialistId: (specialist_id: string[]) => void;
   setExperience: (experience: number) => void;
   setCategory: (category: string) => void;
+  addExperience: () => void;
+  removeExperience: () => void;
 }
 
 const useFormState = create<FormState>((set) => ({
   data: {
-    prefix: "",
+    prefix: "none",
     brief_description: "",
     links: [],
     photo_link: "",
@@ -47,14 +33,14 @@ const useFormState = create<FormState>((set) => ({
     schedule: "",
     location: "",
     languages: [],
-    speciality: "",
+    speciality: [],
     subspecialities: [],
-    specialist_id: "",
+    specialist_id: [],
     experience: 0,
     category: "",
   },
   setPrefix: (prefix: string) => set((state) => ({ data: {...state.data, prefix }})),
-  setBriefDesc: (desc: string) => set((state) => ({ data: {...state.data, brief_description: desc }})),
+  setBriefDesc: (brief_description: string) => set((state) => ({ data: {...state.data, brief_description }})),
   setLinks: (link: string) => set((state) => ({ data: {...state.data, links: [...state.data.links, link] }})),
   setPhoto: (photo_link: string) => set((state) => ({ data: {...state.data, photo_link }})),
   setDescription: (description: string) => set((state) => ({ data: {...state.data, description }})),
@@ -62,12 +48,13 @@ const useFormState = create<FormState>((set) => ({
   setSchedule: (schedule: string) => set((state) => ({ data: {...state.data, schedule }})),
   setLocation: (location: string) => set((state) => ({ data: {...state.data, location }})),
   setLanguages: (language: string) => set((state) => ({ data: {...state.data, languages: [...state.data.languages, language] }})),
-  setSpeciality: (speciality: string) => set((state) => ({ data: {...state.data, speciality }})),
-  setSubspecialities: (subspeciality: string) => set((state) => ({ data: {...state.data, subspecialities: [...state.data.subspecialities, subspeciality] }})),
+  setSpeciality: (speciality: string[]) => set((state) => ({ data: {...state.data, speciality }})),
+  setSubspecialities: (subspecialities: string[]) => set((state) => ({ data: {...state.data, subspecialities }})),
   setExperience: (experience: number) => set((state) => ({ data: {...state.data, experience }})),
   setCategory: (category: string) => set((state) => ({ data: {...state.data, category }})),
-  step: 1,
-  setStep: (step: number) => set((state) => ({ step: step })),
+  setSpecialistId: (specialist_id: string[]) => set((state) => ({ data: {...state.data, specialist_id }})),
+  addExperience: () => set((state) => ({ data: {...state.data, experience: state.data.experience + 1 } })),
+  removeExperience: () => set((state) => ({ data: {...state.data, experience: state.data.experience - 1 } })),
 }));
 
 export default useFormState;

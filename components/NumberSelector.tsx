@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, StyleProp, TextStyle } from 'react-native'
 
 interface Props {
     value: number;
@@ -7,15 +7,16 @@ interface Props {
     remove: () => void;
     min: number;
     max: number;
+    textStyle?: StyleProp<TextStyle>
 }
 
-const NumberSelector = ({ value, add, remove, min, max }: Props) => {
+const NumberSelector = ({ value, add, remove, min, max, textStyle }: Props) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity disabled={value <= min} style={styles.button} onPress={remove}>
         <Ionicons name='remove' size={24} color="#000" />
       </TouchableOpacity>
-      <Text style={styles.numberText}>{value}</Text>
+      <Text style={textStyle !== undefined ? textStyle : styles.numberText}>{value}</Text>
       <TouchableOpacity disabled={value >= max} style={styles.button} onPress={add}>
         <Ionicons name='add' size={24} color="#000" />
       </TouchableOpacity>

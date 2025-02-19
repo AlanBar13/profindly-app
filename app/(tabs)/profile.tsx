@@ -2,7 +2,7 @@ import { StyleSheet, TouchableOpacity, View, ScrollView } from "react-native";
 import { Text, ActivityIndicator } from "react-native-paper";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { Link } from "expo-router";
-import { useAuth } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserProfile } from "@/services/user.service";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,6 +15,7 @@ import useProfile from "@/hooks/useProfile";
 
 const Profile = () => {
   const { isSignedIn, signOut, getToken } = useAuth();
+  const { user } = useUser();
   const setUser = useProfile((state) => state.setUser);
   const unsetUser = useProfile((state) => state.unsetUser);
   const queryClient = useQueryClient();
@@ -68,20 +69,33 @@ const Profile = () => {
               Hola, {profile?.name}
             </Text>
             <ScrollView>
-              {profile?.role !== UserRole.specialist && (
+              {profile?.role !== UserRole.specialist ||
+                (user?.publicMetadata.specialist_form_filled === false && (
+                  <View style={{ marginBottom: 12 }}>
+                    <Text
+                      style={{ fontFamily: "mn-r", marginBottom: 12 }}
+                      variant="bodyLarge"
+                    >
+                      Si quieres ser un especialista haz click en el siguiente
+                      boton
+                    </Text>
+                    <Link href="/specialist-form/welcome" asChild>
+                      <TouchableOpacity style={defaulStyles.btn}>
+                        <Text style={defaulStyles.btnText}>
+                          Ser Especialista
+                        </Text>
+                      </TouchableOpacity>
+                    </Link>
+                  </View>
+                ))}
+              {user?.publicMetadata.specialist_form_filled === true && (
                 <View style={{ marginBottom: 12 }}>
                   <Text
                     style={{ fontFamily: "mn-r", marginBottom: 12 }}
                     variant="bodyLarge"
                   >
-                    Si quieres ser un especialista haz click en el siguiente
-                    boton
+                    Tu solicitud para ser especialista está siendo revisada. Te avisaremos por correo cuando sea aceptada.
                   </Text>
-                  <Link href="/specialist-form/welcome" asChild>
-                    <TouchableOpacity style={defaulStyles.btn}>
-                      <Text style={defaulStyles.btnText}>Ser Especialista</Text>
-                    </TouchableOpacity>
-                  </Link>
                 </View>
               )}
               <View

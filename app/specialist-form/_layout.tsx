@@ -20,7 +20,32 @@ const Layout = () => {
           ),
         }}
       />
-      <Stack.Screen name="service" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="speciality"
+        options={{
+          headerTitle: "",
+          headerTransparent: true,
+          animation: "slide_from_right",
+          headerLeft: () => (
+            <TouchableOpacity onPressIn={() => router.back()}>
+              <Ionicons name="arrow-back" size={26} color="white" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="last"
+        options={{
+          headerTitle: "",
+          headerTransparent: true,
+          animation: "slide_from_right",
+          headerLeft: () => (
+            <TouchableOpacity onPressIn={() => router.back()}>
+              <Ionicons name="arrow-back" size={26} color="white" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
     </Stack>
   );
 };
