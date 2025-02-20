@@ -9,7 +9,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { defaulStyles } from "@/constants/Styles";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import { UserRole } from "@/models/User";
 import { useRefreshOnFocus } from "@/hooks/useRefreshOnFocus";
 import useProfile from "@/hooks/useProfile";
 
@@ -34,8 +33,6 @@ const Profile = () => {
       return user;
     },
   });
-
-  useRefreshOnFocus(refetch);
 
   const handleSignOut = async () => {
     await signOut();
@@ -69,8 +66,7 @@ const Profile = () => {
               Hola, {profile?.name}
             </Text>
             <ScrollView>
-              {profile?.role !== UserRole.specialist ||
-                (user?.publicMetadata.specialist_form_filled === false && (
+              {user?.publicMetadata.specialist_form_filled === false && (
                   <View style={{ marginBottom: 12 }}>
                     <Text
                       style={{ fontFamily: "mn-r", marginBottom: 12 }}
@@ -87,7 +83,7 @@ const Profile = () => {
                       </TouchableOpacity>
                     </Link>
                   </View>
-                ))}
+                )}
               {user?.publicMetadata.specialist_form_filled === true && (
                 <View style={{ marginBottom: 12 }}>
                   <Text
