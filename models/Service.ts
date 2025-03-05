@@ -18,9 +18,9 @@ export interface Aviability {
 }
 
 export interface Service {
-  _id: string;
+  _id?: string;
   label: string;
-  specialist: string;
+  specialist?: string;
   thumbnail: string;
   aviability: Aviability;
   price?: number;
