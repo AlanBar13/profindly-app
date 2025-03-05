@@ -3,14 +3,23 @@ import { TextInput } from "react-native-paper";
 
 interface Props {
   placeholder: string;
-  onChangeText: (text: string) => void;
+  onChangeText?: (text: string) => void;
   value: string;
-  style?: StyleProp<TextStyle>
-  multiline?: boolean
-  keyboardType?: "numeric" | "default"
+  style?: StyleProp<TextStyle>;
+  multiline?: boolean;
+  keyboardType?: "numeric" | "default";
+  disabled?: boolean;
 }
 
-const PrTextInput = ({ placeholder, onChangeText, value, style, multiline = false, keyboardType = 'default' }: Props) => {
+const PrTextInput = ({
+  placeholder,
+  onChangeText,
+  value,
+  style,
+  multiline = false,
+  keyboardType = "default",
+  disabled = false,
+}: Props) => {
   return (
     <TextInput
       style={style}
@@ -25,6 +34,7 @@ const PrTextInput = ({ placeholder, onChangeText, value, style, multiline = fals
       onChangeText={onChangeText}
       keyboardType={keyboardType}
       multiline={multiline}
+      disabled={disabled}
     />
   );
 };

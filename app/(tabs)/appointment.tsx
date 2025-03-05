@@ -12,14 +12,19 @@ const Appointments = () => {
   const { getToken, isSignedIn } = useAuth();
   const [bookings, setBookings] = useState<BookingsResponse[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getBookingsData = async () => {
     try {
+      setLoading(true);
       const token = await getToken();
       const bookings = await getBookings(token);
       setBookings(bookings);
     } catch (error) {
       setError("Error al cargar las citas");
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -49,6 +54,7 @@ const Appointments = () => {
               <View>
                 <BookingsList
                   bookings={bookings}
+                  loading={loading}
                   deleteBooking={handleDeleteBooking}
                   refreshBookings={getBookingsData}
                 />

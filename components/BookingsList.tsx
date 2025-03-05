@@ -16,15 +16,17 @@ import { defaulStyles } from "@/constants/Styles";
 
 interface Props {
   bookings: BookingsResponse[] | undefined;
+  loading: boolean;
   refreshBookings: () => void;
   deleteBooking: (id: string) => void;
 }
 
-const BookingsList = ({ bookings, refreshBookings, deleteBooking }: Props) => {
+const BookingsList = ({ bookings, loading, refreshBookings, deleteBooking }: Props) => {
   const [activeCard, setActiveCard] = useState<string | null>(null);
-  const [refreshing, setRefreshing] = useState(false);
 
   const renderItem: ListRenderItem<BookingsResponse> = ({ item }) => {
+    if (item.service === null) return null;
+
     return (
       <ExpandableCard
         headerTitle={`${item.service.label}`}
@@ -80,10 +82,8 @@ const BookingsList = ({ bookings, refreshBookings, deleteBooking }: Props) => {
   };
 
   const handleRefresh = async () => {
-    setRefreshing(true);
     await refreshBookings();
     setActiveCard(null);
-    setRefreshing(false);
   };
 
   return (
@@ -100,7 +100,7 @@ const BookingsList = ({ bookings, refreshBookings, deleteBooking }: Props) => {
           </View>
         }
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          <RefreshControl refreshing={loading} onRefresh={handleRefresh} />
         }
       />
     </View>

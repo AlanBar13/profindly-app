@@ -125,14 +125,14 @@ const PersonalInfo = () => {
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                style={styles.optionContainer}
+                style={defaulStyles.optionContainer}
               >
                 {prefixes.map((opt, i) => (
                   <Chip
                     key={i}
                     style={[
-                      styles.option,
-                      prefix === opt && styles.optionSelected,
+                      defaulStyles.option,
+                      prefix === opt && defaulStyles.optionSelected,
                     ]}
                     onPress={() => setPrefix(opt)}
                   >
@@ -181,7 +181,7 @@ const PersonalInfo = () => {
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                style={styles.optionContainer}
+                style={defaulStyles.optionContainer}
               >
                 {categories.map((opt, i) => {
                   if (opt.id === "none") return null;
@@ -189,8 +189,8 @@ const PersonalInfo = () => {
                     <Chip
                       key={i}
                       style={[
-                        styles.option,
-                        category === opt.id && styles.optionSelected,
+                        defaulStyles.option,
+                        category === opt.id && defaulStyles.optionSelected,
                       ]}
                       onPress={() => setCategory(opt.id)}
                     >
@@ -253,16 +253,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     padding: 6,
   },
-  optionContainer: {
-    flexDirection: "row",
-    marginTop: 10,
-  },
-  option: {
-    marginRight: 5,
-  },
-  optionSelected: {
-    backgroundColor: Colors.dark.inversePrimary,
-  },
+  
   buttonDisabled: {
     backgroundColor: Colors.dark.outline,
   },

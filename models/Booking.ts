@@ -45,7 +45,7 @@ export interface BookingsResponse {
   bookDate: string;
   client: string;
   endTime: string;
-  service: ServiceSpecialist;
+  service: ServiceSpecialist | null;
   startTime: string;
   status: string;
 }

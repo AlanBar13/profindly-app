@@ -53,6 +53,21 @@ const Layout = () => {
         }}
       />
       <Tabs.Screen
+        name="service"
+        options={{
+          href: user?.publicMetadata.specialist === true ? "/(tabs)/service" : null, // hide tab if user is not specialist
+          tabBarLabel: "Servicio",
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons
+              color={color}
+              size={size}
+              name="file-tray-full-outline"
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           tabBarLabel: "Perfil",
