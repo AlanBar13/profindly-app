@@ -46,10 +46,12 @@ const ServicePage = () => {
   const [duration, setDuration] = useState("");
   const [useTimeForAll, setUseTimeForAll] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [pageloading, setPageLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setPageLoading(true);
         const token = await getToken();
         const service = await getService(token);
         if (service) {
@@ -72,6 +74,8 @@ const ServicePage = () => {
       } catch (error) {
         const err = error as AxiosError;
         console.log(err.response?.data);
+      } finally {
+        setPageLoading(false);
       }
     };
     fetchData();
@@ -173,150 +177,156 @@ const ServicePage = () => {
 
   return (
     <SafeAreaView>
-      <ScrollView>
-        <View style={style.container}>
-          <View style={style.headerContainer}>
-            <Text style={[defaulStyles.semiboldFont]} variant="headlineLarge">
-              Servicio
-            </Text>
-            <Text style={[defaulStyles.regularFont, { fontSize: 16 }]}>
-              Aqui podras modificar los dias y el horario en el que te
-              encuentras disponible
-            </Text>
-          </View>
-          <View style={defaulStyles.inputContainer}>
-            <Text style={defaulStyles.inputTitle}>Nombre del Servicio:</Text>
-            <PrTextInput placeholder="" onChangeText={setName} value={name} />
-          </View>
-          <View style={[defaulStyles.inputContainer]}>
-            <Text style={defaulStyles.inputTitle}>Formato:</Text>
-            <SelectorComponent
-              options={types}
-              selected={type}
-              setSelected={setType}
-            />
-          </View>
-          <View style={[defaulStyles.inputContainer]}>
-            <Text style={defaulStyles.inputTitle}>Lugar de Consulta:</Text>
-            {type === "in-person" || type === "hybrid" ? (
+      {pageloading ? (
+        <ActivityIndicator />
+      ) : (
+        <ScrollView>
+          <View style={style.container}>
+            <View style={style.headerContainer}>
+              <Text style={[defaulStyles.semiboldFont]} variant="headlineLarge">
+                Servicio
+              </Text>
+              <Text style={[defaulStyles.regularFont, { fontSize: 16 }]}>
+                Aqui podras modificar los dias y el horario en el que te
+                encuentras disponible
+              </Text>
+            </View>
+            <View style={defaulStyles.inputContainer}>
+              <Text style={defaulStyles.inputTitle}>Nombre del Servicio:</Text>
+              <PrTextInput placeholder="" onChangeText={setName} value={name} />
+            </View>
+            <View style={[defaulStyles.inputContainer]}>
+              <Text style={defaulStyles.inputTitle}>Formato:</Text>
+              <SelectorComponent
+                options={types}
+                selected={type}
+                setSelected={setType}
+              />
+            </View>
+            <View style={[defaulStyles.inputContainer]}>
+              <Text style={defaulStyles.inputTitle}>Lugar de Consulta:</Text>
+              {type === "in-person" || type === "hybrid" ? (
+                <PrTextInput
+                  placeholder=""
+                  value={location}
+                  onChangeText={setLocation}
+                />
+              ) : (
+                <Text style={defaulStyles.regularFont}>Online</Text>
+              )}
+            </View>
+            <View style={defaulStyles.inputContainer}>
+              <Text style={defaulStyles.inputTitle}>Dias Disponibles:</Text>
+              <View style={style.dayContainer}>
+                {days.map((day, i) => (
+                  <TouchableOpacity
+                    key={i}
+                    style={[
+                      style.roundButton,
+                      isDaySelected(day.id) && style.selectedButton,
+                    ]}
+                    onPress={() =>
+                      setSelectedDays((prev) =>
+                        prev.includes(day.id)
+                          ? prev.filter((d) => d !== day.id)
+                          : [...prev, day.id]
+                      )
+                    }
+                  >
+                    <Text
+                      style={[
+                        defaulStyles.regularFont,
+                        isDaySelected(day.id) && style.selectedText,
+                      ]}
+                    >
+                      {day.name}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+            <View style={defaulStyles.inputContainer}>
+              <Text style={defaulStyles.inputTitle}>Horario Disponibles:</Text>
+              {selectedDays.length > 0 && (
+                <View>
+                  <Text style={defaulStyles.regularFont}>
+                    Selecciona el horario para los dias seleccionados
+                  </Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text style={defaulStyles.regularFont}>
+                      Usar el mismo horario para todos los dias
+                    </Text>
+                    <Switch
+                      value={useTimeForAll}
+                      onValueChange={() => setUseTimeForAll(!useTimeForAll)}
+                    />
+                  </View>
+                </View>
+              )}
+              {useTimeForAll && (
+                <TimeSelector
+                  startDate={timings["all"]?.start || "Selecciona el horario"}
+                  endDate={timings["all"]?.end || "Selecciona el horario"}
+                  setStartDate={(start) =>
+                    handleTimeChange("all", start, timings["all"]?.end || "")
+                  }
+                  setEndDate={(end) =>
+                    handleTimeChange("all", timings["all"]?.start || "", end)
+                  }
+                />
+              )}
+              {!useTimeForAll &&
+                selectedDays.map((day, i) => (
+                  <View key={i}>
+                    <Text style={defaulStyles.regularFont}>
+                      {days.find((d) => d.id === day)?.fullday}
+                    </Text>
+                    <TimeSelector
+                      key={i}
+                      startDate={timings[day]?.start || "Selecciona el horario"}
+                      endDate={timings[day]?.end || "Selecciona el horario"}
+                      setStartDate={(start) =>
+                        handleTimeChange(day, start, timings[day]?.end || "")
+                      }
+                      setEndDate={(end) =>
+                        handleTimeChange(day, timings[day]?.start || "", end)
+                      }
+                    />
+                  </View>
+                ))}
+            </View>
+            <View
+              style={[defaulStyles.inputContainer, { alignItems: "center" }]}
+            >
+              <Text style={defaulStyles.inputTitle}>Horario selecionado:</Text>
+              <Text style={defaulStyles.regularFont}>{getDateText}</Text>
+            </View>
+            <View style={defaulStyles.inputContainer}>
+              <Text style={defaulStyles.inputTitle}>
+                Duracion de la sesion (min):
+              </Text>
               <PrTextInput
                 placeholder=""
-                value={location}
-                onChangeText={setLocation}
+                keyboardType="numeric"
+                onChangeText={setDuration}
+                value={duration}
               />
-            ) : (
-              <Text style={defaulStyles.regularFont}>Online</Text>
-            )}
-          </View>
-          <View style={defaulStyles.inputContainer}>
-            <Text style={defaulStyles.inputTitle}>Dias Disponibles:</Text>
-            <View style={style.dayContainer}>
-              {days.map((day, i) => (
+            </View>
+            <View style={{ marginTop: 10, marginBottom: 10 }}>
+              {loading ? (
+                <ActivityIndicator />
+              ) : (
                 <TouchableOpacity
-                  key={i}
-                  style={[
-                    style.roundButton,
-                    isDaySelected(day.id) && style.selectedButton,
-                  ]}
-                  onPress={() =>
-                    setSelectedDays((prev) =>
-                      prev.includes(day.id)
-                        ? prev.filter((d) => d !== day.id)
-                        : [...prev, day.id]
-                    )
-                  }
+                  style={[defaulStyles.btn]}
+                  onPress={() => submitChanges()}
                 >
-                  <Text
-                    style={[
-                      defaulStyles.regularFont,
-                      isDaySelected(day.id) && style.selectedText,
-                    ]}
-                  >
-                    {day.name}
-                  </Text>
+                  <Text style={defaulStyles.btnText}>Guardar Cambios</Text>
                 </TouchableOpacity>
-              ))}
+              )}
             </View>
           </View>
-          <View style={defaulStyles.inputContainer}>
-            <Text style={defaulStyles.inputTitle}>Horario Disponibles:</Text>
-            {selectedDays.length > 0 && (
-              <View>
-                <Text style={defaulStyles.regularFont}>
-                  Selecciona el horario para los dias seleccionados
-                </Text>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text style={defaulStyles.regularFont}>
-                    Usar el mismo horario para todos los dias
-                  </Text>
-                  <Switch
-                    value={useTimeForAll}
-                    onValueChange={() => setUseTimeForAll(!useTimeForAll)}
-                  />
-                </View>
-              </View>
-            )}
-            {useTimeForAll && (
-              <TimeSelector
-                startDate={timings["all"]?.start || "Selecciona el horario"}
-                endDate={timings["all"]?.end || "Selecciona el horario"}
-                setStartDate={(start) =>
-                  handleTimeChange("all", start, timings["all"]?.end || "")
-                }
-                setEndDate={(end) =>
-                  handleTimeChange("all", timings["all"]?.start || "", end)
-                }
-              />
-            )}
-            {!useTimeForAll &&
-              selectedDays.map((day, i) => (
-                <View key={i}>
-                  <Text style={defaulStyles.regularFont}>
-                    {days.find((d) => d.id === day)?.fullday}
-                  </Text>
-                  <TimeSelector
-                    key={i}
-                    startDate={timings[day]?.start || "Selecciona el horario"}
-                    endDate={timings[day]?.end || "Selecciona el horario"}
-                    setStartDate={(start) =>
-                      handleTimeChange(day, start, timings[day]?.end || "")
-                    }
-                    setEndDate={(end) =>
-                      handleTimeChange(day, timings[day]?.start || "", end)
-                    }
-                  />
-                </View>
-              ))}
-          </View>
-          <View style={[defaulStyles.inputContainer, { alignItems: "center" }]}>
-            <Text style={defaulStyles.inputTitle}>Horario selecionado:</Text>
-            <Text style={defaulStyles.regularFont}>{getDateText}</Text>
-          </View>
-          <View style={defaulStyles.inputContainer}>
-            <Text style={defaulStyles.inputTitle}>
-              Duracion de la sesion (min):
-            </Text>
-            <PrTextInput
-              placeholder=""
-              keyboardType="numeric"
-              onChangeText={setDuration}
-              value={duration}
-            />
-          </View>
-          <View style={{ marginTop: 10, marginBottom: 10 }}>
-            {loading ? (
-              <ActivityIndicator />
-            ) : (
-              <TouchableOpacity
-                style={[defaulStyles.btn]}
-                onPress={() => submitChanges()}
-              >
-                <Text style={defaulStyles.btnText}>Guardar Cambios</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };
