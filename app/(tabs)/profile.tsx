@@ -11,6 +11,7 @@ import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useRefreshOnFocus } from "@/hooks/useRefreshOnFocus";
 import useProfile from "@/hooks/useProfile";
+import NotSignedIn from "@/components/NotSignedIn";
 
 const Profile = () => {
   const { isSignedIn, signOut, getToken } = useAuth();
@@ -28,7 +29,8 @@ const Profile = () => {
     enabled: isSignedIn,
     retry: false,
     queryFn: async () => {
-      const user = await getUserProfile(await getToken());
+      const token = await getToken();
+      const user = await getUserProfile(token);
       setUser(user);
       return user;
     },
@@ -178,26 +180,7 @@ const Profile = () => {
             </ScrollView>
           </Animated.View>
         ) : (
-          <View>
-            <Text
-              style={{ fontFamily: "mn-sb", marginBottom: 12 }}
-              variant="headlineLarge"
-            >
-              Perfil
-            </Text>
-            <Text
-              style={{ fontFamily: "mn-r", marginBottom: 12 }}
-              variant="bodyLarge"
-            >
-              Si quieres tener acceso a esta funcionalidad, registrate o inicia
-              sesion dando click en el siguiente boton:
-            </Text>
-            <Link href="/(modals)/login" asChild>
-              <TouchableOpacity style={defaulStyles.btn}>
-                <Text style={defaulStyles.btnText}>Iniciar Sesion</Text>
-              </TouchableOpacity>
-            </Link>
-          </View>
+          <NotSignedIn title="Perfil" />
         )}
       </View>
     </SafeAreaView>

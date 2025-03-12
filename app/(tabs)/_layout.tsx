@@ -1,12 +1,37 @@
-import React from "react";
+import { useEffect } from "react";
 import { Redirect, Tabs } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useUser, useAuth } from "@clerk/clerk-expo";
+import useProfile from "@/hooks/useProfile";
+import {
+  getUserProfile,
+  updateUserNotificationToken,
+} from "@/services/user.service";
+import { useNotification } from "@/hooks/useNotifications";
 
 const Layout = () => {
   const { user } = useUser();
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, getToken } = useAuth();
+  const { expoPushToken } = useNotification();
+  const setUser = useProfile((state) => state.setUser);
+
+  const getProfile = async () => {
+    console.log("get profile")
+    const token = await getToken();
+    const user = await getUserProfile(token);
+    if (expoPushToken !== null && user.notificationToken !== expoPushToken) {
+      console.log("No token");
+      await updateUserNotificationToken(user.auth_id, expoPushToken, token);
+    }
+    setUser(user);
+  };
+
+  useEffect(() => {
+    if (isSignedIn && expoPushToken !== null) {
+      getProfile();
+    }
+  }, [isSignedIn, expoPushToken]);
 
   if (isSignedIn && !user?.unsafeMetadata.onboarding_completed) {
     return <Redirect href="/auth/sign-up" />;
@@ -42,7 +67,8 @@ const Layout = () => {
       <Tabs.Screen
         name="inbox"
         options={{
-          tabBarLabel: "Mensajes",
+          tabBarLabel: "Notificaciones",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons
               color={color}
@@ -55,15 +81,12 @@ const Layout = () => {
       <Tabs.Screen
         name="service"
         options={{
-          href: user?.publicMetadata.specialist === true ? "/(tabs)/service" : null, // hide tab if user is not specialist
+          href:
+            user?.publicMetadata.specialist === true ? "/(tabs)/service" : null, // hide tab if user is not specialist
           tabBarLabel: "Servicio",
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              color={color}
-              size={size}
-              name="file-tray-full-outline"
-            />
+            <Ionicons color={color} size={size} name="file-tray-full-outline" />
           ),
         }}
       />

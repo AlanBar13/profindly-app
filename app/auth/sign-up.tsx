@@ -9,10 +9,12 @@ import { AxiosError } from "axios";
 import { createUser } from "@/services/user.service";
 import { CreateUserData } from "@/models/User";
 import { defaulStyles } from "@/constants/Styles";
+import { useNotification } from "@/hooks/useNotifications";
 
 const SignUp = () => {
   const { user } = useUser();
   const { showAlert } = useAlert();
+  const { expoPushToken } = useNotification();
   const [name, setName] = useState(user?.firstName || "");
   const [lastname, setLastname] = useState(user?.lastName || "");
   const [loading, setLoading] = useState(false);
@@ -40,6 +42,11 @@ const SignUp = () => {
           login_type: "social",
           auth_id: user.id,
         };
+
+        if (expoPushToken) {
+          userData["notificationToken"] = expoPushToken;
+        }
+        
         await createUser(userData);
 
         setName("");

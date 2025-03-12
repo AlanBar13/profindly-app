@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "profindly-app",
+    "name": "Profindly",
     "slug": "profindly-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -12,7 +12,8 @@
       "image": "./assets/images/splash.png"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.desscript.profindly"
     },
     "android": {
       "adaptiveIcon": {
@@ -20,6 +21,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.desscript.profindly",
+      "googleServicesFile": "./google-services.json",
       "permissions": [
         "android.permission.RECORD_AUDIO"
       ]

@@ -23,12 +23,10 @@ import {
   Platform,
   TouchableOpacity,
   useColorScheme,
-  View,
 } from "react-native";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { tokenCache } from "@/lib/cache";
 import AlertProvider from "@/hooks/useAlert";
-import ApiProvider from "@/hooks/useApi";
 import { Ionicons } from "@expo/vector-icons";
 import ModalHeaderText from "@/components/ModalHeaderText";
 import {
@@ -38,7 +36,16 @@ import {
 } from "@tanstack/react-query";
 import { useAppState } from "@/hooks/useAppState";
 import { useOnlineManager } from "@/hooks/useOnlineManager";
-import ScheduleHeader from "@/components/ScheduleHeader";
+import NotificationProvider from "@/hooks/useNotifications";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  })
+})
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -96,21 +103,23 @@ export default function RootLayout() {
 
   return (
     <PaperProvider theme={CombinedDarkTheme}>
-      <ThemeProvider value={CombinedDarkTheme}>
-        <AlertProvider>
-          <ClerkProvider
-            tokenCache={tokenCache}
-            publishableKey={publishableKey}
-          >
-            <ClerkLoaded>
-              <QueryClientProvider client={queryClient}>
-                <RootLayoutNav />
-                <StatusBar style="auto" />
-              </QueryClientProvider>
-            </ClerkLoaded>
-          </ClerkProvider>
-        </AlertProvider>
-      </ThemeProvider>
+      <NotificationProvider>
+        <ThemeProvider value={CombinedDarkTheme}>
+          <AlertProvider>
+            <ClerkProvider
+              tokenCache={tokenCache}
+              publishableKey={publishableKey}
+            >
+              <ClerkLoaded>
+                <QueryClientProvider client={queryClient}>
+                  <RootLayoutNav />
+                  <StatusBar style="auto" />
+                </QueryClientProvider>
+              </ClerkLoaded>
+            </ClerkProvider>
+          </AlertProvider>
+        </ThemeProvider>
+      </NotificationProvider>
     </PaperProvider>
   );
 }
@@ -176,11 +185,7 @@ function RootLayoutNav() {
           ),
         }}
       />
-      <Stack.Screen
-        name="specialist-form"
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="specialist-form" options={{ headerShown: false }} />
     </Stack>
   );
 }
-

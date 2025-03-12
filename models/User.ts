@@ -12,9 +12,16 @@ export interface User {
   gender: string;
   preferred_language?: string;
   preferred_location?: string;
+  notificationToken?: string;
   role: UserRole;
   login_type: string;
   auth_id: string;
+}
+
+export interface MinimalUser {
+  _id: string;
+  name: string;
+  lastname: string;
 }
 
 export interface CreateUserData extends Omit<User, "_id" | "role"> {}
