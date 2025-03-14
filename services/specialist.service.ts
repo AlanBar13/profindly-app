@@ -26,7 +26,6 @@ export async function getSpecialistsSearch(
   }
   // remove last &
   url = url.slice(0, -1);
-  console.log("url", url);
   const res = await api.get<Specialist[]>(url);
   return res.data;
 }
@@ -47,7 +46,6 @@ export async function autocompleteSpecialist(query: string, field: string) {
 
 export async function getSpecialistService(id: string) {
   const res = await api.get<string>(`/services/specialist/${id}`);
-  console.log("service", res.data);
   return res.data;
 }
 

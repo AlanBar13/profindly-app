@@ -29,7 +29,6 @@ export async function getSpecialistScheduleByDate(id: string, date: string) {
   const res = await api.get<BookingSlot[]>(
     `/bookings/available?serviceId=${id}&date=${date}`
   );
-  console.log("bookings called at", new Date().toISOString());
   return res.data;
 }
 

@@ -17,7 +17,6 @@ const Layout = () => {
   const setUser = useProfile((state) => state.setUser);
 
   const getProfile = async () => {
-    console.log("get profile")
     const token = await getToken();
     const user = await getUserProfile(token);
     if (expoPushToken !== null && user.notificationToken !== expoPushToken) {
