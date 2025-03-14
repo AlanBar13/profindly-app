@@ -14,3 +14,22 @@ export async function getUserProfile(token: string | null) {
 
   return res.data;
 }
+
+export async function updateUserNotificationToken(
+  userId: string,
+  notificationToken: string,
+  token: string | null
+) {
+  const res = await api.patch<User>(
+    `/users/${userId}`,
+    {
+      notificationToken,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
+}

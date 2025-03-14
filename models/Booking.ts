@@ -1,6 +1,4 @@
-import { Service } from "./Service";
 import { Specialist } from "./Specialist";
-import { User } from "./User";
 
 export interface Booking {
   _id: string;

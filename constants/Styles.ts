@@ -28,6 +28,7 @@ export const defaulStyles = StyleSheet.create({
   },
   regularFont: {
     fontFamily: "mn-r",
+    color: "#ffff"
   },
   semiboldFont: {
     fontFamily: "mn-sb",
@@ -52,5 +53,15 @@ export const defaulStyles = StyleSheet.create({
   },
   optionSelected: {
     backgroundColor: Colors.dark.inversePrimary,
+  },
+  titleContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 12,
+  },
+  title: {
+    fontFamily: "mn-sb",
+    fontSize: 24,
+    color: "#fff",
   },
 });
