@@ -19,6 +19,7 @@ export interface Specialist {
   reviews: string[];
   category: string;
   user: User;
+  service?: string;
 }
 
 export interface CreateSpecialist extends Omit<Specialist, "_id" | "rating" | "reviews" | "user"> {}

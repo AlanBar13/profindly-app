@@ -44,7 +44,7 @@ const Schedule = () => {
     enabled: !!service && !serviceLoading,
     queryFn: () =>
       getSpecialistScheduleByDate(service!, date.format("YYYY/MM/DD")),
-    //refetchInterval: 10000, //refetch every 10 seconds
+    refetchInterval: 10000, //refetch every 10 seconds
   });
 
   const handleSelectDate = (date: dayjs.Dayjs) => {
@@ -95,7 +95,7 @@ const Schedule = () => {
       headerLeft: () => (
         <TouchableOpacity
           style={styles.roundButton}
-          onPressIn={() => router.back()}
+          onPressIn={() => router.replace(`/schedule/${id}`)}
         >
           <Ionicons name="chevron-back" size={24} color={"#000"} />
         </TouchableOpacity>

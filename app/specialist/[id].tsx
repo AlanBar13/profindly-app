@@ -230,15 +230,17 @@ const Page = () => {
             <Text style={styles.footerPrice}>
               $ {specialist.budget_range[0]} - {specialist.budget_range[1]}
             </Text>
-            <Text>la consulta</Text>
+            <Text style={[styles.footerPrice, { fontSize: 12 }]}>la consulta</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[defaulStyles.btn, { paddingRight: 20, paddingLeft: 20 }]}
-            onPress={goToSchedulePage}
-          >
-            <Text style={defaulStyles.btnText}>Agendar Cita</Text>
-          </TouchableOpacity>
+          {specialist.service && (
+            <TouchableOpacity
+              style={[defaulStyles.btn, { paddingRight: 20, paddingLeft: 20 }]}
+              onPress={goToSchedulePage}
+            >
+              <Text style={defaulStyles.btnText}>Agendar Cita</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </Animated.View>
       <Snackbar
