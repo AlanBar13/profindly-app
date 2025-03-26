@@ -7,7 +7,7 @@ export interface Booking {
   endTime: string;
   service: string;
   startTime: string;
-  status: string;
+  status: "booked" | "pending" | "cancelled" | "completed"
 }
 
 export interface CreateBooking extends Omit<Booking, "_id" | "client" | "status"> {}

@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
+import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Notification } from "@/models/Notifications";
 import { defaulStyles } from "@/constants/Styles";
@@ -36,16 +37,23 @@ const Page = () => {
     },
   });
 
-  const markAsRead = async (id: string) => {
+  const goToNotificationDetail = async (id: string) => {
     try {
-      console.log("Mark as read", id)
       const token = await getToken();
-      await notificationMarkAsRead(id, token);
-      setNotifications((prevNotifications) =>
-        prevNotifications.map((notification) =>
-          notification._id === id ? { ...notification, read: true } : notification
-        )
-      );
+      const notification = notifications.find((n) => n._id === id);
+      if (!notification?.read) {
+        console.log("Marking as read");
+        await notificationMarkAsRead(id, token);
+        setNotifications((prevNotifications) =>
+          prevNotifications.map((notification) =>
+            notification._id === id
+              ? { ...notification, read: true }
+              : notification
+          )
+        );
+      }
+
+      router.push(`/notification/${id}`);
     } catch (error) {
       const err = error as AxiosError;
       console.log(err.response?.data);
@@ -65,7 +73,7 @@ const Page = () => {
             <NotificationList
               notifications={notifications}
               refreshNotifications={refetch}
-              markAsRead={markAsRead}
+              notificationPressed={goToNotificationDetail}
               loading={isLoading}
             />
           </View>

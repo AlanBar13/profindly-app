@@ -159,6 +159,13 @@ function RootLayoutNav() {
         }}
       />
       <Stack.Screen
+        name="notification/[id]"
+        options={{
+          title: "",
+          headerTransparent: true,
+        }}
+      />
+      <Stack.Screen
         name="specialist/[id]"
         options={{ headerTitle: "", headerTransparent: true }}
       />

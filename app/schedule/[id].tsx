@@ -5,7 +5,7 @@ import Animated, { FadeOut, FadeIn } from "react-native-reanimated";
 import { ActivityIndicator, Text } from "react-native-paper";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import ScheduleHeader from "@/components/ScheduleHeader";
+import PageHeader from "@/components/PageHeader";
 import { useQuery } from "@tanstack/react-query";
 import DateTimePicker from "react-native-ui-datepicker";
 import dayjs from "dayjs";
@@ -91,7 +91,7 @@ const Schedule = () => {
       headerTitleStyle: {
         fontFamily: "mn-r",
       },
-      headerTitle: () => <ScheduleHeader />,
+      headerTitle: () => <PageHeader title="Agendar" />,
       headerLeft: () => (
         <TouchableOpacity
           style={styles.roundButton}
