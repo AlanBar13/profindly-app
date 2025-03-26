@@ -16,18 +16,18 @@ interface Props {
   notifications: Notification[];
   loading: boolean;
   refreshNotifications: () => void;
-  markAsRead: (id: string) => void
+  notificationPressed: (id: string) => void
 }
 
 const NotificationList = ({
   notifications,
   loading,
   refreshNotifications,
-  markAsRead
+  notificationPressed
 }: Props) => {
   const renderItem: ListRenderItem<Notification> = ({ item }) => {
     return (
-      <TouchableOpacity onPress={() => markAsRead(item._id)}>
+      <TouchableOpacity onPress={() => notificationPressed(item._id)}>
         <View style={styles.notificationContainer}>
           {!item.read && <View style={styles.notificationStatus} />}
           <View style={!item.read && { marginLeft: 10 }}>
@@ -53,7 +53,7 @@ const NotificationList = ({
         data={notifications}
         renderItem={renderItem}
         ListEmptyComponent={
-          <View>
+          <View style={{ alignItems: "center", marginTop: 20 }}>
             <Text style={defaulStyles.regularFont}>No hay notificaciones</Text>
           </View>
         }

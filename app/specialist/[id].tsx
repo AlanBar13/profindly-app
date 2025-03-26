@@ -22,6 +22,9 @@ import * as Linking from "expo-linking";
 import { defaulStyles } from "@/constants/Styles";
 import { getSpecialistById } from "@/services/specialist.service";
 import { useAuth } from "@clerk/clerk-expo";
+import { Specialist } from "@/models/Specialist";
+import { AxiosError } from "axios";
+import { useAlert } from "@/hooks/useAlert";
 
 const { width } = Dimensions.get("window");
 const IMG_HEIGHT = 300;
@@ -29,24 +32,29 @@ const IMG_HEIGHT = 300;
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { isSignedIn } = useAuth();
+  const { showAlert } = useAlert();
   const scrollOffset = useSharedValue(0);
   const navigation = useNavigation();
-  const [errorVisible, setErrorVisible] = useState(false);
-
-  const {
-    data: specialist,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["specialist", id],
-    queryFn: () => getSpecialistById(id),
-  });
+  const [specialist, setSpecialist] = useState<Specialist>();
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (error) {
-      setErrorVisible(true);
-    }
-  }, [error]);
+    const getData = async () => {
+      try {
+        setLoading(true);
+        const data = await getSpecialistById(id);
+        setSpecialist(data);
+      } catch (error) {
+        const err = error as AxiosError;
+        console.log(err.response?.data);
+        showAlert("Error al cargar el especialista");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getData();
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -230,7 +238,9 @@ const Page = () => {
             <Text style={styles.footerPrice}>
               $ {specialist.budget_range[0]} - {specialist.budget_range[1]}
             </Text>
-            <Text style={[styles.footerPrice, { fontSize: 12 }]}>la consulta</Text>
+            <Text style={[styles.footerPrice, { fontSize: 12 }]}>
+              la consulta
+            </Text>
           </TouchableOpacity>
 
           {specialist.service && (
@@ -243,13 +253,6 @@ const Page = () => {
           )}
         </View>
       </Animated.View>
-      <Snackbar
-        visible={errorVisible}
-        onDismiss={() => setErrorVisible(false)}
-        action={{ label: "Cerrar" }}
-      >
-        <Text>Error al obtener el especialista</Text>
-      </Snackbar>
     </View>
   );
 };

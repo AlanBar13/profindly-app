@@ -1,9 +1,13 @@
 import { View, Text, StyleSheet } from "react-native";
 
-const ScheduleHeader = () => {
+interface Props {
+  title: string;
+}
+
+const PageHeader = ({ title }: Props) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Agendar</Text>
+      <Text style={styles.title}>{title}</Text>
     </View>
   );
 };
@@ -21,4 +25,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ScheduleHeader;
+export default PageHeader;

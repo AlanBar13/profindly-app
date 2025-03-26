@@ -22,6 +22,7 @@ export interface MinimalUser {
   _id: string;
   name: string;
   lastname: string;
+  notificationToken?: string;
 }
 
 export interface CreateUserData extends Omit<User, "_id" | "role"> {}
