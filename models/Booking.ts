@@ -1,9 +1,11 @@
 import { Specialist } from "./Specialist";
+import { MinimalUser } from "./User";
 
 export interface Booking {
   _id: string;
   bookDate: string;
   client: string;
+  specialist: string;
   endTime: string;
   service: string;
   startTime: string;
@@ -41,7 +43,7 @@ export interface ServiceSpecialist {
 export interface BookingsResponse {
   _id: string;
   bookDate: string;
-  client: string;
+  client: MinimalUser;
   endTime: string;
   service: ServiceSpecialist | null;
   startTime: string;

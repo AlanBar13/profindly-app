@@ -17,11 +17,12 @@ import { defaulStyles } from "@/constants/Styles";
 interface Props {
   bookings: BookingsResponse[] | undefined;
   loading: boolean;
+  specialist: boolean;
   refreshBookings: () => void;
   deleteBooking: (id: string) => void;
 }
 
-const BookingsList = ({ bookings, loading, refreshBookings, deleteBooking }: Props) => {
+const BookingsList = ({ bookings, loading, specialist, refreshBookings, deleteBooking }: Props) => {
   const [activeCard, setActiveCard] = useState<string | null>(null);
 
   const renderItem: ListRenderItem<BookingsResponse> = ({ item }) => {
@@ -38,7 +39,7 @@ const BookingsList = ({ bookings, loading, refreshBookings, deleteBooking }: Pro
         <View style={styles.detailContainer}>
           <View>
             <Text style={styles.detailText}>
-              Cita con: {getSpecialistName(item.service.specialist)}
+              Cita con: {!specialist ? getSpecialistName(item.service.specialist) : `${item.client.name} ${item.client.lastname}`}
             </Text>
           </View>
           <View

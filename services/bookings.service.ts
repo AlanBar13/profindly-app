@@ -23,6 +23,22 @@ export const getBookings = async (token: string | null) => {
   }
 };
 
+export const getSpecialistBookings = async (token: string | null, specialist: string) => {
+  try {
+    const response = await api.get<BookingsResponse[]>(`/bookings/specialist/${specialist}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    const err = error as AxiosError;
+    console.log(err.response?.data);
+    return [] as BookingsResponse[];
+  }
+};
+
 export const deleteBooking = async (token: string | null, id: string) => {
   const response = await api.delete(`/bookings/${id}`, {
     headers: { Authorization: `Bearer ${token}` },

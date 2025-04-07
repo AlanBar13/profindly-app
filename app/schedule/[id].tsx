@@ -67,6 +67,7 @@ const Schedule = () => {
           endTime: booking.end,
           service: service,
           startTime: booking.start,
+          specialist: id,
         };
         const token = await getToken();
         await createBooking(bookingData, token);

@@ -16,6 +16,7 @@ export interface User {
   role: UserRole;
   login_type: string;
   auth_id: string;
+  specialist?: string;
 }
 
 export interface MinimalUser {
