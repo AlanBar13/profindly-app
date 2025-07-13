@@ -13,7 +13,6 @@ import { useRef, useState } from "react";
 import * as Haptics from "expo-haptics";
 import { categories } from "@/constants/Categories";
 
-
 interface Props {
   onCategoryChange: (category: string) => void;
 }
@@ -50,9 +49,11 @@ const ExploreHeader = ({ onCategoryChange }: Props) => {
             </TouchableOpacity>
           </Link>
 
-          <TouchableOpacity style={styles.filterButton}>
-            <Ionicons name="options-outline" size={28} />
-          </TouchableOpacity>
+          <Link href="/recomendation/user-form" asChild>
+            <TouchableOpacity style={styles.filterButton}>
+              <Ionicons name="bulb-outline" size={28} />
+            </TouchableOpacity>
+          </Link>
         </View>
 
         <ScrollView
