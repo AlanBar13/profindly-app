@@ -9,7 +9,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { defaulStyles } from "@/constants/Styles";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import { useRefreshOnFocus } from "@/hooks/useRefreshOnFocus";
 import useProfile from "@/hooks/useProfile";
 import NotSignedIn from "@/components/NotSignedIn";
 
@@ -68,7 +67,7 @@ const Profile = () => {
               Hola, {profile?.name}
             </Text>
             <ScrollView>
-              {user?.publicMetadata.specialist_form_filled === false && (
+              {user?.publicMetadata.specialist_form_filled !== true && (
                   <View style={{ marginBottom: 12 }}>
                     <Text
                       style={{ fontFamily: "mn-r", marginBottom: 12 }}
@@ -86,7 +85,7 @@ const Profile = () => {
                     </Link>
                   </View>
                 )}
-              {user?.publicMetadata.specialist_form_filled === true && (
+              {(user?.publicMetadata.specialist_form_filled === true && user.publicMetadata.specialist !== true) && (
                 <View style={{ marginBottom: 12 }}>
                   <Text
                     style={{ fontFamily: "mn-r", marginBottom: 12 }}

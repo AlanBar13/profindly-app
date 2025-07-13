@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons'
 import { View, Text, StyleSheet, TouchableOpacity, StyleProp, TextStyle } from 'react-native'
+import { Colors } from '@/constants/Colors'
 
 interface Props {
     value: number;
@@ -28,7 +29,8 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 10
+        gap: 4,
+        paddingVertical: 0,
     },
     button: {
         backgroundColor: "#fff",
@@ -39,12 +41,11 @@ const styles = StyleSheet.create({
     },
     numberText: {
         fontSize: 20,
-        fontFamily: "mn-b",
-        color: "#000",
-        borderWidth: 1,
-        borderColor: "grey",
-        padding: 10,
-        borderRadius: 10
+        fontFamily: "mn-sb",
+        color: Colors.dark.primary,
+        borderWidth: 0,
+        padding: 4,
+        borderRadius: 6,
     }
 })
 
