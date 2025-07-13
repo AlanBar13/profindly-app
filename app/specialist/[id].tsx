@@ -94,7 +94,7 @@ const Page = () => {
     try {
       const title = `${specialist?.user.name} ${specialist?.user.lastname}`;
       const url = Linking.createURL(`/specialist/${id}`);
-      const message = `Conoce a ${specialist?.prefix} ${specialist?.user.name} ${specialist?.user.lastname} en Profindly: ${url}`;
+      const message = `Conoce a ${specialist?.prefix} ${specialist?.user.name} ${specialist?.user.lastname} en NexoMedix: ${url}`;
 
       await Share.share({
         title: title,

@@ -7,7 +7,7 @@ const SpecialistForm = () => {
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <Text style={styles.titletext}>¡Bienvenido a Profindly!</Text>
+        <Text style={styles.titletext}>¡Bienvenido a NexoMedix!</Text>
         <Text style={styles.text}>
           Nos entusiasma que formes parte de nuestra comunidad de especialistas
           en salud. Para garantizar una experiencia confiable y personalizada,

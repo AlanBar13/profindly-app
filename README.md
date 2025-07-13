@@ -1,4 +1,4 @@
-# Profindly Mobile App
+# NexoMedix Mobile App
 
 A cross-platform mobile chat application built with Expo, allowing users to interact with specialists.
 

@@ -52,7 +52,7 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <View style={[styles.verticallySpaced]}>
-        <Text style={{ fontFamily: "mn-b", fontSize: 20, marginBottom: 12, color: "white" }}>Bienvenido a Profindly</Text>
+        <Text style={{ fontFamily: "mn-b", fontSize: 20, marginBottom: 12, color: "white" }}>Bienvenido a NexoMedix</Text>
         <Text style={{ fontFamily: "mn-r", fontSize: 16, marginBottom: 12, color: "white" }}>Inicia sesion o registrate con tu cuenta de Google o Apple</Text>
       </View>
       <View style={styles.verticallySpaced}>
