@@ -4,21 +4,26 @@
     "slug": "profindly-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/adaptive-icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/splash.png"
+      "image": "./assets/images/splash-icon-light.png"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.desscript.profindly"
+      "bundleIdentifier": "com.desscript.profindly",
+      "icon": {
+        "light": "./assets/images/ios-light.png",
+        "dark": "./assets/images/ios-dark.png",
+        "tinted": "./assets/images/ios-tinted.png"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#cebdff"
       },
       "package": "com.desscript.profindly",
       "googleServicesFile": "./google-services.json",
@@ -36,7 +41,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/icon.png",
+          "image": "./assets/images/splash-icon-light.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#cebdff"
