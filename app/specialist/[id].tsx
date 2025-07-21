@@ -169,7 +169,7 @@ const Page = () => {
         entering={SlideInDown}
       >
         <Animated.Image
-          source={{ uri: specialist.photo_link }}
+          source={{ uri: specialist.photoLink }}
           style={[styles.image, imageAnimatedStyle]}
           resizeMode="cover"
         />
@@ -185,7 +185,7 @@ const Page = () => {
             />
             <Text style={styles.location}>{specialist.location}</Text>
           </View>
-          <Text style={styles.briefText}>{specialist.brief_description}</Text>
+          <Text style={styles.briefText}>{specialist.briefDescription}</Text>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
@@ -236,14 +236,14 @@ const Page = () => {
         >
           <TouchableOpacity style={styles.footerText}>
             <Text style={styles.footerPrice}>
-              $ {specialist.budget_range[0]} - {specialist.budget_range[1]}
+              $ {specialist.budgetRange[0]} - {specialist.budgetRange[1]}
             </Text>
             <Text style={[styles.footerPrice, { fontSize: 12 }]}>
               la consulta
             </Text>
           </TouchableOpacity>
 
-          {specialist.service && (
+          {(specialist.services && specialist.services.length > 0) && (
             <TouchableOpacity
               style={[defaulStyles.btn, { paddingRight: 20, paddingLeft: 20 }]}
               onPress={goToSchedulePage}

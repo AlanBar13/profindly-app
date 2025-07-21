@@ -77,7 +77,7 @@ const Last = () => {
         <View style={styles.sectionContainer}>
           <Text style={styles.subTitle}>Información Personal</Text>
           <View style={{ alignItems: "center", marginBottom: 10 }}>
-            <Avatar.Image size={100} source={{ uri: data.photo_link }} />
+            <Avatar.Image size={100} source={{ uri: data.photoLink }} />
           </View>
           <View style={styles.row}>
             <Text style={styles.infoText}>Nombre a mostrar:</Text>
@@ -87,7 +87,7 @@ const Last = () => {
           </View>
           <View style={styles.noRow}>
             <Text style={styles.infoText}>Breve Descripción:</Text>
-            <Text style={styles.infoText}>{data.brief_description}</Text>
+            <Text style={styles.infoText}>{data.briefDescription}</Text>
           </View>
           <View style={styles.row}>
             <Text style={styles.infoText}>Ubicación:</Text>
@@ -96,7 +96,7 @@ const Last = () => {
           <View style={styles.row}>
             <Text style={styles.infoText}>Costo Cnsulta:</Text>
             <Text style={styles.infoText}>
-              {data.budget_range[0]} - {data.budget_range[1]}
+              {data.budgetRange[0]} - {data.budgetRange[1]}
             </Text>
           </View>
           <View style={styles.row}>
@@ -121,7 +121,7 @@ const Last = () => {
           </View>
           <View style={styles.row}>
             <Text style={styles.infoText}>Cedula Profesional:</Text>
-            <Text style={styles.infoText}>{data.specialist_id.join(", ")}</Text>
+            <Text style={styles.infoText}>{data.specialistId.join(", ")}</Text>
           </View>
           <View style={styles.row}>
             <Text style={styles.infoText}>Años de experiancia:</Text>

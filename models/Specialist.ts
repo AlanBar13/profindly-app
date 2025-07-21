@@ -1,28 +1,29 @@
-import { User } from "./User";
+import { Service } from "./Service";
+import { MinimalUser, User } from "./User";
 
 export interface Specialist {
-  _id: string;
+  id: number;
   prefix: string;
-  brief_description: string;
-  photo_link: string;
+  briefDescription: string;
+  photoLink: string;
   description: string;
   links: string[];
-  budget_range: number[];
+  budgetRange: number[];
   schedule: string;
   location: string;
   languages: string[];
   speciality: string[];
   subspecialities: string[];
-  specialist_id: string[];
+  specialistId: string[];
   experience: number;
   rating?: number;
   reviews: string[];
   category: string;
   user: User;
-  service?: string;
+  services?: Service[];
 }
 
-export interface CreateSpecialist extends Omit<Specialist, "_id" | "rating" | "reviews" | "user"> {}
+export interface CreateSpecialist extends Omit<Specialist, "id" | "rating" | "reviews" | "user"> {}
 
 export interface SpecialistPhotoResponse {
   isPublic: boolean

@@ -5,25 +5,25 @@ export enum UserRole {
 }
 
 export interface User {
-  _id: string;
+  id: number;
   name: string;
   lastname: string;
   email: string;
   gender: string;
-  preferred_language?: string;
-  preferred_location?: string;
+  preferredLanguage?: string;
+  preferredLocation?: string;
   notificationToken?: string;
   role: UserRole;
-  login_type: string;
-  auth_id: string;
+  loginType: string;
+  authId: string;
   specialist?: string;
 }
 
 export interface MinimalUser {
-  _id: string;
+  id: number;
   name: string;
   lastname: string;
   notificationToken?: string;
 }
 
-export interface CreateUserData extends Omit<User, "_id" | "role"> {}
+export interface CreateUserData extends Omit<User, "id" | "role"> {}

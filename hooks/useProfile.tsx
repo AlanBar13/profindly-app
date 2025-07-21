@@ -13,9 +13,9 @@ const defaultUser: User = {
   email: "",
   gender: "",
   role: UserRole.user,
-  login_type: "",
-  auth_id: "",
-  _id: "",
+  loginType: "",
+  authId: "",
+  id: -1,
 };
 
 const useProfile = create<ProfileState>((set) => ({

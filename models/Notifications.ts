@@ -2,7 +2,7 @@ import { Booking } from "./Booking";
 import { MinimalUser } from "./User";
 
 export interface Notification {
-  _id: string;
+  id: number;
   from: MinimalUser;
   to: MinimalUser;
   title: string;

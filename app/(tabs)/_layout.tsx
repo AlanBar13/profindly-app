@@ -21,7 +21,7 @@ const Layout = () => {
     const user = await getUserProfile(token);
     if (expoPushToken !== null && user.notificationToken !== expoPushToken) {
       console.log("No token");
-      await updateUserNotificationToken(user.auth_id, expoPushToken, token);
+      await updateUserNotificationToken(user.authId, expoPushToken, token);
     }
     setUser(user);
   };

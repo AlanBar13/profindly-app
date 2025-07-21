@@ -39,8 +39,8 @@ const SignUp = () => {
           lastname,
           email: user.primaryEmailAddress.emailAddress,
           gender,
-          login_type: "social",
-          auth_id: user.id,
+          loginType: "social",
+          authId: user.id,
         };
 
         if (expoPushToken) {

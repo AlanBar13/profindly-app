@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
+  Pressable,
 } from "react-native";
 import { ActivityIndicator, Avatar, Chip, Text } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
@@ -18,22 +19,24 @@ import { useState, useMemo } from "react";
 import { AxiosError } from "axios";
 import { router } from "expo-router";
 import { categories } from "@/constants/Categories";
+import StateSelect from "@/components/StateSelect";
 
 const prefixes = ["Dr.", "Dra.", "Mtro.", "Mtra.", "Lic.", "none"];
 
 const PersonalInfo = () => {
   const [imgLoading, setImgLoading] = useState(false);
+  const [stateModalVisible, setStateModalVisible] = useState(false);
   const [min, setMin] = useState("");
   const [max, setMax] = useState("");
   const prefix = useFormState((state) => state.data.prefix);
   const setPrefix = useFormState((state) => state.setPrefix);
   const category = useFormState((state) => state.data.category);
   const setCategory = useFormState((state) => state.setCategory);
-  const briefDesc = useFormState((state) => state.data.brief_description);
+  const briefDesc = useFormState((state) => state.data.briefDescription);
   const setBriefDesc = useFormState((state) => state.setBriefDesc);
   const location = useFormState((state) => state.data.location);
   const setLocation = useFormState((state) => state.setLocation);
-  const photo = useFormState((state) => state.data.photo_link);
+  const photo = useFormState((state) => state.data.photoLink);
   const setPhoto = useFormState((state) => state.setPhoto);
   const setBudget = useFormState((state) => state.setBudgetRange);
 
@@ -151,10 +154,25 @@ const PersonalInfo = () => {
               />
             </View>
             <View style={styles.inputContainer}>
-              <PrTextInput
-                placeholder="Ubicación"
-                onChangeText={(text) => setLocation(text.trim())}
-                value={location}
+              <Pressable
+                onPress={() => setStateModalVisible(true)}
+                style={styles.statePressable}
+              >
+                <Text
+                  style={
+                    location
+                      ? styles.stateText
+                      : styles.stateTextPlaceholder
+                  }
+                >
+                  {location || "Selecciona un estado"}
+                </Text>
+              </Pressable>
+              <StateSelect
+                visible={stateModalVisible}
+                onClose={() => setStateModalVisible(false)}
+                onSelect={setLocation}
+                selectedState={location}
               />
             </View>
             <View style={styles.inputContainer}>
@@ -207,6 +225,7 @@ const PersonalInfo = () => {
                   !isFormValid && styles.buttonDisabled,
                 ]}
                 onPress={() => goNextStep()}
+                disabled={!isFormValid}
               >
                 <Text style={defaulStyles.btnText}>Siguiente</Text>
               </TouchableOpacity>
@@ -253,9 +272,27 @@ const styles = StyleSheet.create({
     fontSize: 18,
     padding: 6,
   },
-  
   buttonDisabled: {
     backgroundColor: Colors.dark.outline,
+  },
+  statePressable: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Colors.dark.outlineVariant,
+    padding: 14,
+    marginBottom: 16,
+    marginTop: 8,
+  },
+  stateText: {
+    color: '#000',
+    fontSize: 16,
+    fontFamily: 'mn-r',
+  },
+  stateTextPlaceholder: {
+    color: Colors.dark.outline,
+    fontSize: 16,
+    fontFamily: 'mn-r',
   },
 });
 

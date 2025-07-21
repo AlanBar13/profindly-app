@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Profindly",
+    "name": "NexoMedix",
     "slug": "profindly-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,7 +13,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.desscript.profindly",
+      "bundleIdentifier": "com.desscript.nexomedix",
       "icon": {
         "light": "./assets/images/ios-light.png",
         "dark": "./assets/images/ios-dark.png",
@@ -25,7 +25,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#cebdff"
       },
-      "package": "com.desscript.profindly",
+      "package": "com.desscript.nexomedix",
       "googleServicesFile": "./google-services.json",
       "permissions": [
         "android.permission.RECORD_AUDIO"

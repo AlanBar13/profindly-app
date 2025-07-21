@@ -11,7 +11,6 @@ export async function getUserProfile(token: string | null) {
       Authorization: `Bearer ${token}`,
     },
   });
-
   return res.data;
 }
 

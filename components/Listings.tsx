@@ -23,7 +23,7 @@ const Listings = ({ items, loading }: Props) => {
   const listRef = useRef<FlatList>(null);
 
   const renderRow: ListRenderItem<Specialist> = ({ item }) => (
-    <Link href={`/specialist/${item._id}`} asChild>
+    <Link href={`/specialist/${item.id}`} asChild>
       <TouchableOpacity>
         <Animated.View
           style={styles.listing}
@@ -36,7 +36,7 @@ const Listings = ({ items, loading }: Props) => {
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
             >
-              <Avatar.Image size={32} source={{ uri: item.photo_link }} />
+              <Avatar.Image size={32} source={{ uri: item.photoLink }} />
               <Text
                 style={{ fontSize: 16, fontFamily: "mn-sb" }}
               >{`${item.prefix} ${item.user.name} ${item.user.lastname} `}</Text>
@@ -50,14 +50,14 @@ const Listings = ({ items, loading }: Props) => {
           </View>
 
           <Text style={{ fontSize: 12, fontFamily: "mn-r" }}>
-            {item.brief_description}
+            {item.briefDescription}
           </Text>
 
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Text style={{ fontFamily: "mn-sb", fontSize: 12 }}>
-              $ {item.budget_range[0]} - {item.budget_range[1]} por hora
+              $ {item.budgetRange[0]} - {item.budgetRange[1]} por hora
             </Text>
             <View style={{ flexDirection: "row", gap: 4 }}>
               <Ionicons name="location-outline" size={16} />

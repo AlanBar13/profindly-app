@@ -2,7 +2,7 @@ import { Specialist } from "./Specialist";
 import { MinimalUser } from "./User";
 
 export interface Booking {
-  _id: string;
+  id: number;
   bookDate: string;
   client: string;
   specialist: string;
@@ -12,7 +12,7 @@ export interface Booking {
   status: "booked" | "pending" | "cancelled" | "completed"
 }
 
-export interface CreateBooking extends Omit<Booking, "_id" | "client" | "status"> {}
+export interface CreateBooking extends Omit<Booking, "id" | "client" | "status"> {}
 
 
 export interface BookingSlot {
@@ -33,7 +33,7 @@ export interface Slot {
 }
 
 export interface ServiceSpecialist {
-  _id: string;
+  id: number;
   label: string;
   specialist: Specialist;
   price?: number;
@@ -41,7 +41,7 @@ export interface ServiceSpecialist {
 }
 
 export interface BookingsResponse {
-  _id: string;
+  id: number;
   bookDate: string;
   client: MinimalUser;
   endTime: string;

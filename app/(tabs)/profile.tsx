@@ -151,8 +151,8 @@ const Profile = () => {
               <View style={styles.profileItem}>
                 <Text style={{ fontFamily: "mn-sb" }}>Lenguaje:</Text>
                 <Text style={{ fontFamily: "mn-r" }}>
-                  {profile?.preferred_language !== null
-                    ? profile?.preferred_language
+                  {profile?.preferredLanguage !== null
+                    ? profile?.preferredLanguage
                     : "N/A"}
                 </Text>
               </View>
@@ -160,8 +160,8 @@ const Profile = () => {
               <View style={styles.profileItem}>
                 <Text style={{ fontFamily: "mn-sb" }}>Ubicacion:</Text>
                 <Text style={{ fontFamily: "mn-r" }}>
-                  {profile?.preferred_location !== null
-                    ? profile?.preferred_location
+                  {profile?.preferredLocation !== null
+                    ? profile?.preferredLocation
                     : "N/A"}
                 </Text>
               </View>

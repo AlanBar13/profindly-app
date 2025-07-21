@@ -22,7 +22,7 @@ const Speciality = () => {
   const setspeciality = useFormState((state) => state.setSpeciality);
   const subspecialities = useFormState((state) => state.data.subspecialities);
   const setSubspecialities = useFormState((state) => state.setSubspecialities);
-  const specialist_ids = useFormState((state) => state.data.specialist_id);
+  const specialist_ids = useFormState((state) => state.data.specialistId);
   const setSpecialistId = useFormState((state) => state.setSpecialistId);
   const description = useFormState((state) => state.data.description);
   const setDescription = useFormState((state) => state.setDescription);
@@ -131,6 +131,7 @@ const Speciality = () => {
             <TouchableOpacity
               style={[defaulStyles.btn, !isFormValid && styles.buttonDisabled]}
               onPress={() => goNextStep()}
+              disabled={!isFormValid}
             >
               <Text style={defaulStyles.btnText}>Siguiente</Text>
             </TouchableOpacity>
